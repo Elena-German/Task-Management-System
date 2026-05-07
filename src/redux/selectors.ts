@@ -12,7 +12,7 @@ import {
   importantLength,
   findById,
   ids,
-} from 'redux/todoSelectors.js';
+} from 'redux/todoSelectors';
 import { auth } from 'redux/userSelectors';
 
 export const selectors = {

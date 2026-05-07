@@ -43,34 +43,17 @@
     "incremental": true,
     "baseUrl": "src",
     "paths": {
-      "mocks/*": [
-        "src/mocks/*"
-      ],
-      "app/*": [
-        "src/app/*"
-      ],
-      "assets/*": [
-        "src/assets/*"
-      ],
-      "constants/*": [
-        "src/constants/*"
-      ],
-      "components/*": [
-        "src/components/*"
-      ],
-      "types/*": [
-        "src/types/*"
-      ],
-      "utils/*": [
-        "src/utils/*"
-      ],
-      "pages/*": [
-        "src/pages/*"
-      ],
-      "api/*": [
-        "src/api/*"
-      ]
+      "app/*": ["app/*"],
+      "constants/*": ["constants/*"],
+      "components/*": ["components/*"],
+      "types/*": ["types/*"],
+      "utils/*": ["utils/*"],
+      "api/*": ["api/*"],
+      "redux/*": ["redux/*"],
+      "App": ["App"]
     }
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

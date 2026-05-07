@@ -26,46 +26,72 @@ caseReducers — те функции, которые мы передали в cr
 */
 
 import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import type { Todo } from 'types/todo'; //  import type - вы сообщаете компилятору, что импортируете сущность, которая нужна только для проверки типов.
+//  Она гарантированно не содержит исполняемого JS-кода (классов или переменных).
 
-const initState = [
-  { id: 1, name: 'Первая задача', info: 'описание задачи описание задачи описание задачи', isImportant: false, isCompleted: false, },
-  { id: 2, name: 'Вторая задача', info: 'описание задачи описание задачи описание задачи', isImportant: false, isCompleted: true, },
-  { id: 3, name: 'Третья задача', info: 'описание задачи описание задачи описание задачи', isImportant: false, isCompleted: false, },
-  { id: 4, name: 'Четвертая задача', info: 'описание задачи описание задачи описание задачи', isImportant: true, isCompleted: true, },
+const initState: Todo[] = [
+  { id: 1, name: 'Первая задача', info: 'описание задачи', isImportant: false, isCompleted: true },
+  {
+    id: 2,
+    name: 'Вторая задача',
+    info: 'длинное описание задачи ххххххххххххххххххххххх хххххххххххххххххххххх ххххххххххххххххххххххх',
+    isImportant: false,
+    isCompleted: false,
+  },
+  {
+    id: 3,
+    name: 'Третья задача',
+    info: 'описание задачи',
+    isImportant: true,
+    isCompleted: true,
+  },
+  {
+    id: 4,
+    name: 'Четвертая задача длинное название хххххххххххххxx xxxxxxxxxxxxxxxxxxx',
+    info: 'описание задачи',
+    isImportant: false,
+    isCompleted: false,
+  },
 ];
 
 const todoSlice = createSlice({
-    name: 'todo',
-    initialState: initState,
-    reducers: {   // объект с обработчиками экшенов. Каждый обработчик принимает state и action = {type, payload}
-        create(state, action) {  // Для каждого редьюсера, определённого в reducers, createSlice генерирует соответствующий генератор действий
-            state.push(action.payload); // мутация state
-        },
-        toggle(state, action) {
-            const item = state.find((item) => item.id === action.payload);
-            item.isCompleted = !item.isCompleted; // мутация state
-        },
-        remove(state, action) {
-            return state.filter((item) => item.id !== action.payload); // возврат нового state
-        },
+  name: 'todo',
+  initialState: initState,
+  reducers: {
+    // объект с обработчиками экшенов. Каждый обработчик принимает state и action = {type, payload}
+    create(state, action: PayloadAction<Todo>) {
+      // Для каждого редьюсера, определённого в reducers, createSlice генерирует соответствующий генератор действий
+      state.push(action.payload); // мутация state.
+      // Благодаря библиотеке Immer, которая встроена в Redux Toolkit на самом деле под капотом создается новая копия состояния, а исходное состояние остается неизменным.
     },
+    toggle(state, action: PayloadAction<number>) {
+      const item = state.find((item) => item.id === action.payload);
+      if (item) {
+        item.isCompleted = !item.isCompleted; // мутация state
+      }
+    },
+    remove(state, action: PayloadAction<number>) {
+      return state.filter((item) => item.id !== action.payload); // возврат нового state
+    },
+  },
 });
 
 export const { create, toggle, remove } = todoSlice.actions; // это объект с функциями для отправки данных (генераторами действий).
-                                // (Action Creator — это обычная функция, которая создает и возвращает объект action) с тем же именем
-                                // Вместо того чтобы вручную писать объект-пустышку каждый раз, когда вы хотите изменить состояние:
-                                // ❌ dispatch({ type: 'remove', payload: id })
-                                // Вы вызываете генератор действия, который делает это за вас:
-                                // ✅ dispatch(remove(2))
+// (Action Creator — это обычная функция, которая создает и возвращает объект action) с тем же именем
+// Вместо того чтобы вручную писать объект-пустышку каждый раз, когда вы хотите изменить состояние:
+// ❌ dispatch({ type: 'remove', payload: id })
+// Вы вызываете генератор действия, который делает это за вас:
+// ✅ dispatch(remove(2))
 
-export default todoSlice.reducer;  //  это одна большая функция, которую необходимо передать в Store
-                                   // (объединяет в себе все маленькие функции, которые вы написали внутри объекта reducers)
-                                   //  В файле store.js мы подключаем его:
-                                   // const store = configureStore({
-                                   //   reducer: {
-                                   //     todos: todoSlice.reducer // вот здесь он "оживает"
-                                   //   }
-                                   // });
+export default todoSlice.reducer; //  это одна большая функция, которую необходимо передать в Store
+// (объединяет в себе все маленькие функции, которые вы написали внутри объекта reducers)
+//  В файле store.js мы подключаем его:
+// const store = configureStore({
+//   reducer: {
+//     todos: todoSlice.reducer // вот здесь он "оживает"
+//   }
+// });
 
 /*
 

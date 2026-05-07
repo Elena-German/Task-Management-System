@@ -1,0 +1,17 @@
+.user-login{
+  margin: 30px 0 10px;
+  font-style: italic;
+  font-size: 0.8em;
+}
+
+.user-login span {
+  display: inline-block;
+  width: 200px;
+  text-align: left;
+}
+
+.user-login button {
+  width: 80px;
+  text-align: center;
+  border: 1px #ccc solid;
+}

@@ -4,14 +4,35 @@
 }
 
 .todo-item span {
-  padding-left: 20px;
   display: table-cell;
 }
 
 .btn-delete {
   width: 20px;
   height: 20px;
-  background: url('delete.svg') no-repeat center;
+  background: url('images/delete.svg') no-repeat center;
   border: none;
-
 }
+
+.fit-content {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.name {
+width: 250px;
+}
+
+.expand-content {
+  padding-left: 20px;
+  word-break: break-word;
+}
+
+.todo-item:has(.btn-delete:hover) .expand-content {
+  color: #ff0000;
+}
+
+.btn-delete:hover {
+  background: url('images/delete-hover.svg') no-repeat center;
+}
+

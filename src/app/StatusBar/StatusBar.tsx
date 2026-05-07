@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
-import 'app/StatusBar/StatusBar.css';
 import { selectors } from 'redux/selectors';
+import 'app/StatusBar/StatusBar.css';
 
-export function StatusBar() {
+export const StatusBar: React.FC = () => {
   const total = useSelector(selectors.todo.allLength);
   const completed = useSelector(selectors.todo.completedLength);
   const uncompleted = useSelector(selectors.todo.uncompletedLength);
@@ -14,4 +14,4 @@ export function StatusBar() {
       {completed}, <span className="fw-bold">важных {important} </span>
     </div>
   );
-}
+};

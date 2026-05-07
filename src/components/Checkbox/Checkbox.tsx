@@ -2,7 +2,7 @@ import React from 'react';
 import { CheckboxProps } from './Checkbox.types';
 import './Checkbox.css';
 
-export function Checkbox({ label, checked, onChange, isImportant }: CheckboxProps) {
+export function Checkbox({ label, checked, onChange }: CheckboxProps) {
   return (
     <>
       <label className="form-check-label" htmlFor={label}>
@@ -12,6 +12,7 @@ export function Checkbox({ label, checked, onChange, isImportant }: CheckboxProp
           value=""
           checked={checked}
           onChange={onChange}
+          id={label}
         />
         {label}
       </label>

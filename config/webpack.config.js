@@ -10,6 +10,7 @@ const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const tsConfigRaw = require('../tsconfig.json');
 const localIdent = require('./css.modules.config');
+
 const {
   src,
   dist,

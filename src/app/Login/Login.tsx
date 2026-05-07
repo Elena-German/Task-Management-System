@@ -1,8 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { actions } from 'redux/actions';
-import { selectors } from 'redux/selectors'
+import { selectors } from 'redux/selectors';
+import 'app/Login/Login.css';
 
-export function Login() {
+export const Login: React.FC = () => {
   const auth = useSelector(selectors.user.auth); // извлекаем их хранилища данные по авторизации (да,нет)
 
   // создаем две функции для отправки экшенов в хранилище
@@ -12,19 +13,8 @@ export function Login() {
 
   return (
     <div className="user-login">
-      {auth ? (
-        <>
-          <span>Пользователь авторизован</span>
-          &nbsp;
-          <button onClick={logout}>Выйти</button>
-        </>
-      ) : (
-        <>
-          <span>Пользователь не авторизован</span>
-          &nbsp;
-          <button onClick={login}>Войти</button>
-        </>
-      )}
+      <span> {auth ? '* Пользователь авторизован' : '* Пользователь не авторизован'}</span>
+      <button onClick={auth ? logout : login}>{auth ? 'Выйти' : 'Войти'}</button>
     </div>
   );
-}
+};

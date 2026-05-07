@@ -1,3 +1,7 @@
+  .todo-form {
+    padding-top: 20px;
+  }
+
  .todo-form .form-check-input.custom-checkbox {
    border-radius: 0%;
    width: 1em;

@@ -27,14 +27,14 @@ export function TodoList() {
 
 // ПОСЛЕ ОПТИМИЗАЦИИ
 
-export function TodoList() {
+export const TodoList: React.FC = () => {
   const ids = useSelector(selectors.todo.ids, shallowEqual); //используем функцию shallowEqual для сравнения массивов, исключаем тем самым лишний рендер
 
   return (
-    <>
+    <div className="todo-scroll-wrapper">
       <div className="todo-list">
-        {ids.length > 0 ? ids.map((id) => <TodoItem key={id} id={id} />) : <p>Список задач пустой</p>}
+        {ids.length > 0 ? ids.map((id: number) => <TodoItem key={id} id={id} />) : <p>Список задач пустой</p>}
       </div>
-    </>
+    </div>
   );
-}
+};

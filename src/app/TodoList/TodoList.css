@@ -3,4 +3,25 @@
   padding-bottom: 30px;
   border-spacing: 10px;
   width: 100%;
+  table-layout: auto;
+  /* позволяем ячейкам подстраиваться */
+}
+
+.todo-scroll-wrapper {
+  height: 300px;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.todo-scroll-wrapper::-webkit-scrollbar {
+  width: 15px;
+border: 1px solid #b8b6b6;
+  border-radius: 20px;
+}
+
+.todo-scroll-wrapper::-webkit-scrollbar-thumb {
+  background-color: #b8b6b6;
+  border-radius: 20px;
+  border: 3px solid transparent;
+  background-clip: content-box;
 }

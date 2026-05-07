@@ -3,7 +3,7 @@ import { createSelector } from 'reselect'; // заменим селекторы 
 // reselect может хранить в кэше только одно значение — и мы будем постоянно перезаписывать кэш в селекторе для поиска задачи по id
 //Для решения этой проблемы установим пакет re-reselect
 import { createCachedSelector } from 're-reselect';
-
+import type { RootState } from 'redux/store'
 /*
 
 const inputSelectorOne = (state) => state.one;
@@ -28,7 +28,7 @@ const awesomeSelector = createSelector(inputSelectorOne, inputSelectorTwo, resul
 
 */
 
-export const all = (state) => state.todos; // массив всех задач
+export const all = (state:RootState) => state.todos; // массив всех задач
 
 export const allLength = createSelector(
   // количество всех задач
@@ -77,7 +77,7 @@ export const findById = createCachedSelector(
   // createCachedSelector позволяет создавать уникальные кэшированные экземпляры для каждого уникального ключа
 
   all, // 1. Входные селекторы (как в обычном Reselect)
-  (state, id) => id, // 1. Входные селекторы (как в обычном Reselect)
+  (state: RootState, id: number) => id, // 1. Входные селекторы (как в обычном Reselect)
   (items, id) => items.find((item) => item.id === id) // 2. Результат (combiner)
 )(
   (state, id) => id // 3. KeySelector: возвращает ключ для кэширования (например, userId)

@@ -38,3 +38,22 @@ export const store = configureStore({
     user: userReducer,
   },
 });
+
+
+// Выведим типы `RootState` и `AppDispatch` из самого хранилища
+
+export type RootState = ReturnType<typeof store.getState>
+/* store.getState: Это метод Redux-хранилища, который возвращает текущее состояние (весь объект state)
+   typeof store.getState: TypeScript смотрит на функцию getState и определяет её сигнатуру (какие аргументы принимает и что возвращает)
+   ReturnType<...>: Встроенная утилита TypeScript, которая берет тип функции и извлекает только тип того, что эта функция возвращает
+   export type RootState: Создает и экспортирует тип, который полностью описывает структуру вашего хранилища
+   Теперь, если вы добавите новый слайс (slice) в configureStore, тип RootState обновится автоматически.
+*/
+
+export type AppDispatch = typeof store.dispatch
+/* Определяет тип AppDispatch, основываясь на настройках конкретного store
+   Стандартный тип Dispatch из библиотеки Redux «из коробки» не знает о middleware.
+   Если вы используете асинхронные экшны (например, createAsyncThunk), обычный dispatch будет выдавать ошибку в TypeScript,
+   так как он ожидает только простые объекты-экшны.
+   typeof store.dispatch извлекает тип метода dispatch прямо из вашего настроенного хранилища, включая поддержку всех установленных middleware (например, Thunk).
+*/

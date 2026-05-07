@@ -6,6 +6,7 @@ const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const BaseConfig = require('./webpack.config');
 const { dist, publicUrlOrPath, src } = require('./constants');
 
+
 const devWebpackConfig = merge(BaseConfig, {
   // DEV config
   mode: 'development',
