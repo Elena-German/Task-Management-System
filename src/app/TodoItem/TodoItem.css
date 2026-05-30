@@ -1,30 +1,29 @@
 .todo-item {
-  display: table-row;
+  display: grid;
+  /* 1. Чекбокс (auto)
+     2. Название (250px)
+     3. Инфо (забирает всё свободное место - 1fr)
+     4. Кнопка правки (auto)
+     5. Кнопка удаления (auto) */
+  grid-template-columns: auto 250px 1fr auto auto;
+  align-items: center;
   width: 100%;
+  position: relative;
+  gap: 5px;
+  /* Расстояние между колонками */
 }
 
 .todo-item span {
-  display: table-cell;
-}
-
-.btn-delete {
-  width: 20px;
-  height: 20px;
-  background: url('images/delete.svg') no-repeat center;
-  border: none;
+  display: block;
 }
 
 .fit-content {
-  width: 1%;
-  white-space: nowrap;
-}
-
-.name {
-width: 250px;
+  display: flex;
+  min-width: 30px;
 }
 
 .expand-content {
-  padding-left: 20px;
+  padding: 0 10px;
   word-break: break-word;
 }
 
@@ -32,7 +31,62 @@ width: 250px;
   color: #ff0000;
 }
 
-.btn-delete:hover {
-  background: url('images/delete-hover.svg') no-repeat center;
+.todo-item:has(.btn-edit:hover) .expand-content {
+  color: #279634;
 }
 
+.btn-delete,
+.btn-edit {
+  width: 20px;
+  height: 20px;
+  border: none;
+  position: relative;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: center, -1000px -1000px;  /* Уводим hover-картинку за экран */
+  background-size: contain;
+  background-color: #fff;
+}
+
+.btn-delete {
+  background-image: url('images/delete.svg'), url('images/delete-hover.svg');
+}
+
+.btn-delete:hover {
+  background-image: url('images/delete-hover.svg');
+  background-position: center;
+}
+
+.btn-edit {
+  background-image: url('images/edit.svg'), url('images/edit-hover.svg');
+}
+
+.btn-edit:hover {
+  background-image: url('images/edit-hover.svg');
+  background-position: center;
+}
+
+/*
+.btn-delete::after,
+.btn-edit::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.btn-delete:hover::after,
+.btn-edit:hover::after {
+  opacity: 0.9;
+  visibility: visible;
+}
+*/

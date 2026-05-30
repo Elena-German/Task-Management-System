@@ -1,27 +1,29 @@
 .todo-list {
-  display: table;
-  padding-bottom: 30px;
-  border-spacing: 10px;
+  display: grid;
   width: 100%;
-  table-layout: auto;
-  /* позволяем ячейкам подстраиваться */
+  padding: 10px 5px 10px 20px;
+  gap: 10px;
+  /* Отступы между строками */
 }
 
 .todo-scroll-wrapper {
-  height: 300px;
+  height: 250px;
   overflow-y: auto;
+  border: solid 1px #9b9a9a;
+  padding: 5px 0;
   scrollbar-gutter: stable;
+  border-radius: 10px;
 }
 
 .todo-scroll-wrapper::-webkit-scrollbar {
   width: 15px;
-border: 1px solid #b8b6b6;
-  border-radius: 20px;
+  border-left: 1px solid #9b9a9a;
 }
 
 .todo-scroll-wrapper::-webkit-scrollbar-thumb {
-  background-color: #b8b6b6;
-  border-radius: 20px;
+  background-color: #9b9a9a;
   border: 3px solid transparent;
   background-clip: content-box;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }

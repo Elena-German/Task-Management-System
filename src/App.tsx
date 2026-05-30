@@ -1,21 +1,26 @@
 import { Provider } from 'react-redux';
-import { TodoList } from 'app/TodoList/TodoList';
-import { TodoForm } from 'app/TodoForm/TodoForm';
-import { StatusBar } from 'app/StatusBar/StatusBar';
-import { PageContainer } from 'components/PageContainer';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { store } from './redux/store';
-import { Login } from 'app/Login/Login';
+import { TodoList } from 'app/TodoList/TodoList';
+import { PageContainer } from 'components/PageContainer';
+import { EditForm } from 'app/EditForm/EditForm';
+import { NotFoundPage } from 'app/NotFoundPage/NotFoundPage';
 
 function App() {
   return (
-    <Provider store={store}> {/* делает хранилище Redux доступным для всех вложенных компонентов */}
+    <Provider store={store}>
+      {' '}
+      {/* делает хранилище Redux доступным для всех вложенных компонентов */}
       <PageContainer>
         <div className="App">
           <h1>Список задач</h1>
-          <StatusBar />
-          <TodoList />
-          <TodoForm />
-          <Login />
+          <BrowserRouter>
+            <Routes>
+              <Route path="*" element={<NotFoundPage />} />
+              <Route path="/" element={<TodoList />} />
+              <Route path="edit_todo/:id" element={<EditForm />} />
+            </Routes>
+          </BrowserRouter>
         </div>
       </PageContainer>
     </Provider>

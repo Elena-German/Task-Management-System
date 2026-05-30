@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { actions } from 'redux/actions';
 import { Checkbox } from 'components';
+import { useAppDispatch } from 'redux/store';
 import 'app/TodoForm/TodoForm.css';
 
 export const TodoForm: React.FC = () => {
   const [name, setName] = useState('');
   const [info, setInfo] = useState('');
   const [important, setImportant] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleClick = () => {
     if (name.trim() && info.trim()) {

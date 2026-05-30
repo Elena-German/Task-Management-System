@@ -1,7 +1,13 @@
 import { useSelector, shallowEqual } from 'react-redux';
+import { useEffect } from 'react';
 import { TodoItem } from 'app/TodoItem/TodoItem';
 import { selectors } from 'redux/selectors';
+import { RootState, useAppDispatch } from 'redux/store';
+import { loadProcess } from 'redux/todoSlice';
 import 'app/TodoList/TodoList.css';
+import { StatusBar } from 'app/StatusBar/StatusBar';
+import { TodoForm } from 'app/TodoForm/TodoForm';
+import { Login } from 'app/Login/Login';
 
 /* ДО ОПТИМИЗАЦИИ
 
@@ -28,13 +34,42 @@ export function TodoList() {
 // ПОСЛЕ ОПТИМИЗАЦИИ
 
 export const TodoList: React.FC = () => {
-  const ids = useSelector(selectors.todo.ids, shallowEqual); //используем функцию shallowEqual для сравнения массивов, исключаем тем самым лишний рендер
+  const ids = useSelector(selectors.todo.ids, shallowEqual); //используем функцию shallowEqual для сравнения массивов ids, исключаем тем самым лишний рендер
+  const loading = useSelector((state: RootState) => state.todos.loading);
+  const loadError = useSelector((state: RootState) => state.todos.error);
+  const status = useSelector((state: RootState) => state.todos.status);
+  const error = useSelector((state: RootState) => state.todos.error);
+
+  const dispatch =
+    useAppDispatch(); /* useDispatch — это способ "связаться" с Redux из вашего компонента, чтобы изменить в нем данные.
+  В Redux действует правило: вы не можете менять состояние напрямую. Чтобы что-то произошло (например, удалилась задача), вы должны отправить "сообщение" (action) в хранилище.
+  Как это работает:Вызов хука: const dispatch = useDispatch(); дает вам доступ к функции отправки.
+  Отправка экшена: Когда вы вызываете dispatch(remove(id)), вы буквально говорите Redux: "Эй, выполни действие 'remove' с вот этим ID".
+  Результат: Redux получает это сообщение, находит нужный редьюсер, меняет состояние, и ваши компоненты обновляются.
+  Зачем сохранять в const dispatch?
+  Хуки в React можно вызывать только на верхнем уровне компонента. Вы не можете вызвать useDispatch() прямо внутри функции клика по кнопке.
+  Поэтому мы сначала получаем эту функцию и сохраняем ее в переменную, чтобы использовать потом где угодно в этом компоненте */
+
+  useEffect(() => {
+    // получить список задач с сервера
+    dispatch(loadProcess()); //отправляем пседо-экшн
+  }, []);
+
+  if (loading) return <p className="todo-scroll-wrapper">Получение списка задач с сервера...</p>;
+  if (loadError) return <p className="todo-scroll-wrapper">{loadError}</p>;
 
   return (
-    <div className="todo-scroll-wrapper">
-      <div className="todo-list">
-        {ids.length > 0 ? ids.map((id: number) => <TodoItem key={id} id={id} />) : <p>Список задач пустой</p>}
+    <>
+      <StatusBar />
+      <div className="todo-scroll-wrapper">
+        <div className="todo-list">
+          {status && <p>{status}</p>}
+          {error && <p>{error}</p>}
+          {ids.length > 0 ? ids.map((id: number) => <TodoItem key={id} id={id} />) : <p>Список задач пустой</p>}
+        </div>
       </div>
-    </div>
+      <TodoForm />
+      <Login />
+    </>
   );
 };

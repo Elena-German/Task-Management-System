@@ -10,10 +10,15 @@
  .form-check-input.custom-checkbox:focus {
    box-shadow: none;
    border-color: #da4503;
+   cursor: pointer;
  }
 
  .form-check-input:checked {
    background-color: #da4503ed;
    border-color: #da4503;
    border-radius: 50%;
+ }
+
+ .form-check-input.custom-checkbox:hover {
+  cursor: pointer;
  }

@@ -12,6 +12,7 @@ React, React-router-dom, Typescript, Redux, Axios, React Hook Form, Yup, Webpack
 5 - локальный, на js, на Redux Toolkit<br>
 6 - локальный, на js, Redux Toolkit на слайсах<br>
 7 - локальный, перевод на TypeScript<br>
+8 - асинхронное приложение, перевод на клиент-сервер (запросы с fetch)<br>
 
 ## Структура
 
@@ -37,8 +38,8 @@ React, React-router-dom, Typescript, Redux, Axios, React Hook Form, Yup, Webpack
 |   ├── api                                    # папка для работы с сетью
 │   ├── app                                    # основные компоненты с бизнес-логикой│
 │   ├── components                             # папка для компонентов без бизнес-логики (dumb components)
-│   ├── types                                  # интерфейсы для сущностей, например для Task
-│   ├── utils                                  # вспомогательные функции, также разбиваем по файлам. Например, delay.ts
+│   ├── types                                  # интерфейсы для сущностей
+│   ├── utils                                  # вспомогательные функции
 │   ├── index.html                             # корневой html
 │   ├── index.tsx                              # точка входа в приложение для webpack
 │   ├── App.js                                 # точка входа в приложение, роутер

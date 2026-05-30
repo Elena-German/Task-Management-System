@@ -1,10 +1,8 @@
 const express = require("express")
 const cors = require("cors");
-//import { v4 as uuid } from 'uuid';
 
 const app = express()
 
-// Разрешаем запросы только с localhost:3000
 app.use(cors({
   origin: "http://localhost:3000",
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
@@ -13,54 +11,64 @@ app.use(cors({
 
 app.use(express.json()); //добавляет встроенное промежуточное ПО (middleware) для обработки данных в формате JSON из входящих запросов
 
-
-const todos = [{
-    id: '1',
-    name: 'первая',
-    info: 'инфо',
+let todos = [
+  { id: 1, name: 'Первая задачаss', info: 'описание задачи', isImportant: false, isCompleted: true },
+  {
+    id: 2,
+    name: 'Вторая задачаss',
+    info: 'длинное описание задачи ххххххххххххххххххххххх хххххххххххххххххххххх ххххххххххххххххххххххх',
     isImportant: false,
-    isCompleted: true
-},
-{
-    id: '2',
-    name: 'вторая',
-    info: 'инфо2',
+    isCompleted: false,
+  },
+  {
+    id: 3,
+    name: 'Третья задачаss',
+    info: 'описание задачи',
     isImportant: true,
-    isCompleted: false
-}]
+    isCompleted: true,
+  },
+  {
+    id: 4,
+    name: 'Четвертая задача длинное название хххххххххххххxx xxxxxxxxxxxxxxxxxxx ss',
+    info: 'описание задачи',
+    isImportant: false,
+    isCompleted: false,
+  },
+];
 
 // GET-запрос на получение списка задач
 app.get("/todos", (req, res) => {
     res.json(todos);
 })
+
 // GET-запрос задачи по идентификатору
 app.get('/todos/:id', (req, res) => {
-    const todo = todos.find((item) => item.id === req.params.id);
-    console.log(todo)
+    const todo = todos.find((item) => item.id === Number(req.params.id));
     if (todo) {
         res.json(todo);
     } else {
-        res.status(404).send();
+      console.log(todo)
+         res.status(404).json({ message: "Задача не найдена" });
     }
 });
 
 // POST-запрос на добавление задачи
 app.post('/todos', (req, res) => {
+  const uuid = crypto.randomUUID();
     const newTodo = {
-        id: uuid(),
+        id: parseInt(uuid.replace(/-/g, '').substring(0, 13), 16), // Преобразуем hex-строку в number,
         name: req.body.name,
         info: req.body.info,
-        isImportant: req.body.isImportant,
-        isCompleted: req.body.isCompleted,
+        isImportant: req.body.isImportant || false,
+        isCompleted: req.body.isCompleted || false,
     };
-    posts.push(newTodo);
+    todos.push(newTodo);
     res.json(newTodo);
 });
 
 // PUT и PATCH запросы на обновление задачи
 const update = (req, res) => {
-    const id = req.params.id;
-    const todo = todos.find((item) => item.id === id);
+    const todo = todos.find((item) => item.id === Number(req.params.id));
     if (todo) {
         if (req.body.name !== undefined) todo.name = req.body.name;
         if (req.body.info !== undefined) todo.info = req.body.info;
@@ -68,26 +76,26 @@ const update = (req, res) => {
         if (req.body.isCompleted !== undefined) todo.isCompleted = req.body.isCompleted;
         res.json(todo);
     } else {
-        res.status(404).send();
+         res.status(404).json({ message: "Не удалось обновить" });
     }
 };
 app.put('/todos/:id', update);
 app.patch('/todos/:id', update);
 
-// DELETE-запрос на удаление поста блога
+// DELETE-запрос на удаление
 app.delete('/todos/:id', (req, res) => {
-    const index = todos.findIndex((item) => item.id === req.params.id);
+    const index = todos.findIndex((item) => item.id === Number(req.params.id));
     if (index >= 0) {
-        const deleted = todos.splice(index, 1);        
+        const deleted = todos.splice(index, 1);
         res.json(deleted[0]);
     } else {
-        res.status(404).send();
+         res.status(404).json({ message: "Не удалось удалить" });
     }
 });
 
 
 app.listen(4000, () => {
     console.log("Сервер запущен на порту 4000")
-    //приложение ожидает входящие сообщения на определенном порту (4000) на хосте 
-    // (доменное имя, при запуске на нашем компьютере это будет «localhost», что является псевдонимом для 127.0.0.1 
+    //приложение ожидает входящие сообщения на определенном порту (4000) на хосте
+    // (доменное имя, при запуске на нашем компьютере это будет «localhost», что является псевдонимом для 127.0.0.1
 })
