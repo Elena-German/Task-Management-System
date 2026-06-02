@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { actions } from 'redux/actions';
 import { Checkbox } from 'components';
@@ -49,7 +49,15 @@ export const EditForm: React.FC = () => {
   };
 
   if (loading) return <p>Получение задачи с сервера...</p>;
-  if (loadError) return <p className="error">{loadError}</p>;
+  if (loadError)
+    return (
+      <>
+        <p className="error">{loadError}</p>
+        <p>
+          <Link to="/">На главную</Link>
+        </p>
+      </>
+    );
 
   return (
     <>

@@ -13,6 +13,7 @@ React, React-router-dom, Typescript, Redux, Axios, React Hook Form, Yup, Webpack
 6 - локальный, на js, Redux Toolkit на слайсах<br>
 7 - локальный, перевод на TypeScript<br>
 8 - асинхронное приложение, перевод на клиент-сервер (запросы с fetch)<br>
+9 - асинхронное приложение, реализация на createAsyncThunk <br>
 
 ## Структура
 
