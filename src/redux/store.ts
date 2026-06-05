@@ -1,9 +1,7 @@
 //Глобальное хранилище приложения
 
 import { configureStore } from '@reduxjs/toolkit';
-import todoReducer from 'redux/todoSlice';
-import userReducer from 'redux/userSlice';
-import { useDispatch } from 'react-redux';
+import { todoApi } from 'redux/todoApi';
 
 /* метод создания хранилища Redux.
 
@@ -35,28 +33,29 @@ enhancers?:                  - Функция обратного вызова д
 */
 export const store = configureStore({
   reducer: {
-    todos: todoReducer,
-    user: userReducer,
+    [todoApi.reducerPath]: todoApi.reducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(todoApi.middleware),
 });
 
-// Выведим типы `RootState` и `AppDispatch` из самого хранилища
+/* todoApi.reducerPath — это динамический ключ, который мы указали при создании API (строка 'todo').
+ Квадратные скобки [...] вычисляют это значение на лету.
 
-// Тип самого стора (нужен для селекторов)
-export type RootState = ReturnType<typeof store.getState>;
-/* store.getState: Это метод Redux-хранилища, который возвращает текущее состояние (весь объект state)
-   typeof store.getState: TypeScript смотрит на функцию getState и определяет её сигнатуру (какие аргументы принимает и что возвращает)
-   ReturnType<...>: Встроенная утилита TypeScript, которая берет тип функции и извлекает только тип того, что эта функция возвращает
-   export type RootState: Создает и экспортирует тип, который полностью описывает структуру вашего хранилища
-   Теперь, если вы добавите новый слайс (slice) в configureStore, тип RootState обновится автоматически.
-*/
+ todoApi.reducer — это встроенный редюсер, который автоматически создается внутри RTK Query.
 
-// Тип диспатча (чтобы он понимал асинхронные экшены)
-export type AppDispatch = typeof store.dispatch;
-/* Определяет тип AppDispatch, основываясь на настройках конкретного store
-   Стандартный тип Dispatch из библиотеки Redux «из коробки» не знает о middleware.
-   Если вы используете асинхронные экшны (например, createAsyncThunk), обычный dispatch будет выдавать ошибку в TypeScript,
-   так как он ожидает только простые объекты-экшны.
-   typeof store.dispatch извлекает тип метода dispatch прямо из вашего настроенного хранилища, включая поддержку всех установленных middleware (например, Thunk).
+ getDefaultMiddleware() — функция Redux Toolkit, которая возвращает стандартный набор встроенных плагинов (проверок на мутации стейта, сериализуемость данных и поддержку Thunk).
+ .concat(todoApi.middleware) — мы берем этот стандартный набор и добавляем в его конец специальный инструмент (todoApi.middleware).
+
+
+
+ Зачем нужен todoApi.middleware? Это «сердце» автоматизации RTK Query. Оно отвечает за:
+
+Кэширование: Следит, чтобы одни и те же данные не запрашивались с сервера повторно, если они уже есть в памяти.
+
+Жизненный цикл данных (TTL): Автоматически удаляет данные из памяти (кэша), если ни один компонент на экране больше их не использует в течение определенного времени
+  (по умолчанию 60 секунд).
+
+Инвалидацию (Обновление) кэша: Управляет тегами, позволяя автоматически перезапрашивать список задач (вызывать getAllTodo), как только вы выполнили мутацию
+  (например, удалили или создали задачу через removeTodo).
+
 */
-export const useAppDispatch = () => useDispatch<AppDispatch>();

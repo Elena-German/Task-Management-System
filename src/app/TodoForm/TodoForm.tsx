@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { actions } from 'redux/actions';
 import { Checkbox } from 'components';
-import { useAppDispatch } from 'redux/store';
+import { todoApi } from 'redux/todoApi';
 import 'app/TodoForm/TodoForm.css';
+
+const useCreateTodoMutation = todoApi.endpoints.createTodo.useMutation;
 
 export const TodoForm: React.FC = () => {
   const [name, setName] = useState('');
   const [info, setInfo] = useState('');
   const [important, setImportant] = useState(false);
-  const dispatch = useAppDispatch();
+  const [createTodo] = useCreateTodoMutation();
 
   const handleClick = () => {
     if (name.trim() && info.trim()) {
@@ -20,7 +21,7 @@ export const TodoForm: React.FC = () => {
         isImportant: important,
         isCompleted: false,
       };
-      dispatch(actions.todo.create(data));
+      createTodo(data);
       setName('');
       setInfo('');
       setImportant(false);

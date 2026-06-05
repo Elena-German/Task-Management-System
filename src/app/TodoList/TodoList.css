@@ -27,3 +27,8 @@
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
 }
+
+.status_update{
+  height: 20px;
+  font-size: 12px;
+}

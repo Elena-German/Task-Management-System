@@ -1,20 +1,26 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { actions } from 'redux/actions';
-import { selectors } from 'redux/selectors';
+import { useGetUserQuery, useToggleAuthMutation } from 'redux/todoApi';
 import 'app/Login/Login.css';
 
 export const Login: React.FC = () => {
-  const auth = useSelector(selectors.user.auth); // извлекаем их хранилища данные по авторизации (да,нет)
+  const { isAuth, isError, isLoading } = useGetUserQuery(null, {
+    selectFromResult: ({ data, isLoading, isError }) => ({
+      isLoading,
+      isError,
+      isAuth: data?.[0]?.auth ?? false,
+    }),
+  });
 
-  // создаем две функции для отправки экшенов в хранилище
-  const dispatch = useDispatch();
-  const login = () => dispatch(actions.user.login());
-  const logout = () => dispatch(actions.user.logout());
+  const [toggleAuth, { isLoading: isUpdating }] = useToggleAuthMutation();
+
+  if (isLoading) return <div className="status-bar">Загрузка статуса аутентификации</div>;
+  if (isError) return <div className="status-bar">Ошибка загрузки статуса аутентификации</div>;
 
   return (
     <div className="user-login">
-      <span> {auth ? '* Пользователь авторизован' : '* Пользователь не авторизован'}</span>
-      <button onClick={auth ? logout : login}>{auth ? 'Выйти' : 'Войти'}</button>
+      <span> {isAuth ? '* Пользователь авторизован' : '* Пользователь не авторизован'}</span>
+      <button onClick={() => toggleAuth()} disabled={isUpdating}>       
+        {isUpdating ? 'Ожидание...' : isAuth ? 'Выйти' : 'Войти'}
+      </button>
     </div>
   );
 };

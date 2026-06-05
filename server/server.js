@@ -36,13 +36,42 @@ let todos = [
   },
 ];
 
+let user = [{
+  auth: false,
+}];
+
+const delay = (ms) => {
+    let current = Date.now();
+    const future = current + ms;
+    while (current < future) {
+        current = Date.now();
+    }
+};
+
 // GET-запрос на получение списка задач
 app.get("/todos", (req, res) => {
+   delay(1000);
     res.json(todos);
 })
 
+app.get("/user", (req, res) => {
+   delay(1000);
+   res.json(user);
+})
+
+const updateUser = (req, res) => {
+   delay(1000);
+   console.log(req)
+   user[0].auth = !user[0].auth;
+   res.json(user);
+};
+
+app.put('/user', updateUser);
+app.patch('/user', updateUser);
+
 // GET-запрос задачи по идентификатору
 app.get('/todos/:id', (req, res) => {
+   delay(1000);
     const todo = todos.find((item) => item.id === Number(req.params.id));
     if (todo) {
         res.json(todo);
@@ -54,6 +83,7 @@ app.get('/todos/:id', (req, res) => {
 
 // POST-запрос на добавление задачи
 app.post('/todos', (req, res) => {
+   delay(1000);
   const uuid = crypto.randomUUID();
     const newTodo = {
         id: parseInt(uuid.replace(/-/g, '').substring(0, 13), 16), // Преобразуем hex-строку в number,
@@ -68,6 +98,7 @@ app.post('/todos', (req, res) => {
 
 // PUT и PATCH запросы на обновление задачи
 const update = (req, res) => {
+   delay(1000);
     const todo = todos.find((item) => item.id === Number(req.params.id));
     if (todo) {
         if (req.body.name !== undefined) todo.name = req.body.name;
@@ -84,6 +115,7 @@ app.patch('/todos/:id', update);
 
 // DELETE-запрос на удаление
 app.delete('/todos/:id', (req, res) => {
+   delay(1000);
     const index = todos.findIndex((item) => item.id === Number(req.params.id));
     if (index >= 0) {
         const deleted = todos.splice(index, 1);
