@@ -9,11 +9,9 @@ import { EditForm } from 'app/EditForm/EditForm';
 function App() {
   return (
     <Provider store={store}>
-      {' '}
       {/* делает хранилище Redux доступным для всех вложенных компонентов */}
       <PageContainer>
         <div className="App">
-          <h1>Список задач</h1>
           <BrowserRouter>
             <Routes>
               <Route path="*" element={<NotFoundPage />} />

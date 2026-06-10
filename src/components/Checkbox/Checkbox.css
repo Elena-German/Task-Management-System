@@ -5,6 +5,7 @@
    margin-top: 0;
    border-color: #da4503;
    vertical-align: middle;
+   margin-right: 10px;
  }
 
  .form-check-input.custom-checkbox:focus {

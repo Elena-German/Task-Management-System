@@ -1,0 +1,43 @@
+.todo-filter-container {
+  display: flex;
+  justify-content: left;
+  margin: 0 0 10px 0;
+}
+
+.todo-filter-wrapper {
+  display: flex;
+  border: 1px solid #989faa;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  }
+
+.filter-btn {
+  background: none;
+  border: none;
+  padding: 5px 20px;
+  font-size: 14px;
+  font-weight: 550;
+  cursor: pointer;
+    /* Плавный переход для всех изменений цвета за 0.2 секунды */
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+/* Линия-разделитель между кнопками */
+.filter-btn:not(:last-child) {
+  border-right: 1px solid #989faa;
+}
+
+.filter-btn:hover {
+   background-color: #f79913;
+   color:#fff;
+}
+
+.filter-btn.active {
+  background-color: #da4503;
+  color: #ffffff;
+}
+
+/* Убираем синюю рамку браузера при клике, заменяя её на аккуратный контур */
+.filter-btn:focus-visible {
+  outline: 2px solid #f79913;
+  outline-offset: -2px;
+}

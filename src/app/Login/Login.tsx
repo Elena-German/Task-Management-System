@@ -13,12 +13,12 @@ export const Login: React.FC = () => {
   const [toggleAuth, { isLoading: isUpdating }] = useToggleAuthMutation();
 
   if (isLoading) return <div className="status-bar">Загрузка статуса аутентификации</div>;
-  if (isError) return <div className="status-bar">Ошибка загрузки статуса аутентификации</div>;
+  if (isError) return <div className="status-bar">Ошибка загрузки статуса аутентификации пользователя</div>;
 
   return (
     <div className="user-login">
       <span> {isAuth ? '* Пользователь авторизован' : '* Пользователь не авторизован'}</span>
-      <button onClick={() => toggleAuth()} disabled={isUpdating}>       
+      <button onClick={() => toggleAuth()} disabled={isUpdating}>
         {isUpdating ? 'Ожидание...' : isAuth ? 'Выйти' : 'Войти'}
       </button>
     </div>

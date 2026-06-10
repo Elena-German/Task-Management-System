@@ -32,3 +32,102 @@
   height: 20px;
   font-size: 12px;
 }
+
+/* Контейнер пагинации */
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 15px 0;
+  user-select: none;
+}
+
+/* Полностью круглые оранжевые кнопки */
+.pagination-btn-round {
+  position: relative; /* Важно для точного позиционирования иконки */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background-color: #ff7a00;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(255, 122, 0, 0.2);
+  /* Используем will-change, чтобы браузер заранее подготовил видеокарту
+     к анимации масштаба. Это убирает любое микро-размытие и дрожание! */
+  will-change: transform;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Эффект при наведении */
+.pagination-btn-round:not(:disabled):hover {
+  background-color: #e66e00;
+  transform: scale(1.08);
+  box-shadow: 0 6px 15px rgba(255, 122, 0, 0.35);
+}
+
+/* Эффект при клике */
+.pagination-btn-round:not(:disabled):active {
+  transform: scale(0.95);
+}
+
+/* Стиль для заблокированных круглых кнопок */
+.pagination-btn-round:disabled {
+  background-color: #ffe6d1;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* 🌟 ИДЕАЛЬНЫЕ СТРЕЛКИ НА ЧИСТОМ CSS (БЕЗ ДРОЖАНИЯ) */
+.arrow-icon {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  /* Рисуем две линии квадрата */
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  transition: border-color 0.25s ease;
+}
+
+/* Поворачиваем квадрат, чтобы получился уголок влево ‹ */
+.arrow-icon.left {
+  transform: rotate(-45deg);
+  margin-left: 3px; /* Микро-смещение для оптического выравнивания по центру круга */
+}
+
+/* Поворачиваем квадрат, чтобы получился уголок вправо › */
+.arrow-icon.right {
+  transform: rotate(135deg);
+  margin-right: 3px; /* Микро-смещение для оптического выравнивания */
+}
+
+/* Цвет стрелочки внутри заблокированной кнопки */
+.pagination-btn-round:disabled .arrow-icon {
+  border-color: #ffa666; /* Бледный оранжевый цвет для стрелки в disabled */
+}
+
+/* Круглый индикатор номера страницы */
+.page-info-orange {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background-color: #fff5eb;
+  border: 2px solid #ff7a00;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+/* Цифра внутри круга */
+.page-number-accent {
+  color: #ff7a00;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+  line-height: 1;
+}

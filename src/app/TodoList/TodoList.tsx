@@ -1,13 +1,14 @@
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { TodoItem } from 'app/TodoItem/TodoItem';
-import { todoApi } from 'redux/todoApi';
+import { useGetAllTodoQuery } from 'redux/todoApi';
 import { Todo } from 'types/todo';
 import { TodoForm } from 'app/TodoForm/TodoForm';
 import 'app/TodoList/TodoList.css';
 import { StatusBar } from 'app/StatusBar/StatusBar';
 import { Login } from 'app/Login/Login';
-
-//const useGetAllTodoQuery = todoApi.endpoints.getAllTodo.useQuery;
-const useGetAllTodoQuery = todoApi.useGetAllTodoQuery;
+import { FilterType } from 'app/Filter/Filter.types';
+import { Filter } from 'app/Filter/Filter';
 
 /*При создании компонентов для получения данных с сервера мы можем использовать несколько хуков:
 
@@ -66,33 +67,105 @@ const useGetAllTodoQuery = todoApi.endpoints.getAllTodo.useQuery;
 */
 
 export const TodoList: React.FC = () => {
-  const { data, isError, isFetching, isSuccess } = useGetAllTodoQuery(null, { pollingInterval: 2000 });
-  /*автогенерируемый хук
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [currentFilter, setCurrentFilter] = useState<FilterType>('all');
+
+  const page = Number(searchParams.get('page')) || 1;
+
+  const { data, isFetching, isSuccess, isError } = useGetAllTodoQuery({ page, filter: currentFilter });
+  // Достаем счетчики из ответа сервера. Если данных еще нет — ставим 0.
+  const total = data?.counters?.total ?? 0;
+  const completed = data?.counters?.completed ?? 0;
+  const uncompleted = data?.counters?.uncompleted ?? 0;
+  const important = data?.counters?.important ?? 0;
+
+  const filteredTodos = data?.items || [];
+  const hasMore = data?.hasMore ?? false;
+  /* автогенерируемый хук
 
   Хук возвращает объект, содержащий состояние запроса и сами данные.
   Из него извлекаются 4 важные переменные:
   data: Сюда придут данные от сервера (массив ваших задач), когда запрос завершится успешно. До первой загрузки здесь будет undefined.
-  isError: Булевый флаг (true / false). Становится true, если запрос завершился ошибкой (например, упал сервер или пропал интернет).
-  isFetching: Булевый флаг. Становится true каждый раз, когда отправляется запрос на сервер.
-  isSuccess: Булевый флаг. Становится true, когда запрос хотя бы один раз успешно выполнился и данные data уже доступны для отображения.
+  isError: true, если запрос завершился ошибкой (например, упал сервер или пропал интернет).
+  isFetching:  true каждый раз, когда отправляется запрос на сервер.
+  isSuccess:  true, когда запрос хотя бы один раз успешно выполнился и данные data уже доступны для отображения.
   isLoading: равен true только самый первый раз, когда данных еще вообще нет и приложение ждет первый ответ.
+
+    // первый аргумент null — это аргумент, который передается в сам запрос (например, ID или параметры поиска).
+    // Поскольку для получения всех задач параметры не нужны, мы передаем null.
+    // Второй аргумент {...} — объект конфигурации хука, где мы и переопределяем поведение с помощью функции selectFromResult.
+    //
+    // По умолчанию хук возвращает огромный объект, содержащий { data: [...], isLoading: true, status: 'fulfilled', ... }.
+    // Свойство selectFromResult позволяет вам перехватить этот стандартный ответ до того, как он попадет в компонент, и пересобрать его.
 
   */
 
-  if (isFetching && !isSuccess) return <p>Получение списка задач с сервера...</p>;
-  if (isError || (!isFetching && !isSuccess)) return <p>Не удалось загрузить список</p>;
+  //  Если мы не на первой странице, но сервер вернул пустой массив,
+  // мы плавно откатываемся назад, перезаписывая URL через { replace: true }.
+  useEffect(() => {
+    if (page > 1 && isSuccess && filteredTodos.length === 0) {
+      setSearchParams({ page: String(page - 1) }, { replace: true });
+    }
+  }, [filteredTodos, page, isSuccess, setSearchParams]);
+
+  const handlePrevPage = () => {
+    if (page > 1) {
+      setSearchParams({ page: String(page - 1) });
+    }
+  };
+
+  const handleNextPage = () => {
+    if (hasMore) {
+      setSearchParams({ page: String(page + 1) });
+    }
+  };
+
+  // Проверяем, последняя ли это страница
+  const isEndPage = isFetching || !hasMore;
+
+  let contentTodoList;
+
+  if (isFetching && !isSuccess) contentTodoList = <p>Получение списка задач с сервера...</p>;
+  else if (isError || (!isFetching && !isSuccess)) contentTodoList = <p>Не удалось загрузить список</p>;
+  else
+    contentTodoList = (
+      <>
+        {filteredTodos.length > 0 ? (
+          filteredTodos.map((item: Todo) => (
+            <TodoItem key={item.id} todo={item} page={page} currentFilter={currentFilter} />
+          ))
+        ) : (
+          <p>Список задач пустой</p>
+        )}
+      </>
+    );
 
   return (
     <>
-      <StatusBar />
+      <h1>Система управления задачами</h1>
+      <StatusBar total={total} completed={completed} uncompleted={uncompleted} important={important} />
+      <Filter currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} />
       <div className="todo-scroll-wrapper">
-        <div className="todo-list">
-          {data.length > 0 ? (
-            data.map((item: Todo) => <TodoItem key={item.id} todo={item} />)
-          ) : (
-            <p>Список задач пустой</p>
-          )}
+        <div className="todo-list">{contentTodoList}</div>
+      </div>
+      <div className="pagination-container">
+        <button
+          className="pagination-btn-round"
+          onClick={handlePrevPage}
+          disabled={page === 1 || isFetching} // Запрещаем «Назад» во время загрузки
+          aria-label="Назад">
+          <span className="arrow-icon left"></span>
+        </button>
+        <div className="page-info-orange">
+          <span className="page-number-accent">{page}</span>
         </div>
+        <button
+          className="pagination-btn-round"
+          onClick={handleNextPage}
+          disabled={isEndPage || isFetching} // Запрещаем «Вперед» во время загрузки
+          aria-label="Вперед">
+          <span className="arrow-icon right"></span>
+        </button>
       </div>
       <div className="status_update">{isFetching && <>Обновление списка задач...</>}</div>
       <TodoForm />

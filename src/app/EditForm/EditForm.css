@@ -1,0 +1,131 @@
+.conteiner-content_edit_form{
+  height: 400px;
+  min-height: 400px;
+}
+
+.status {
+  font-size: 14px;
+  color:#da4503;
+  font-weight: 600;
+}
+
+.save_status_container {
+  height: 20px;
+  min-height: 20px;
+  display: flex;
+  align-items: left;
+  justify-content: left;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 15px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  outline: none; /*полностью удаляет контур (обводку) вокруг элемента*/
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+  color: #000;
+}
+
+.form-textarea {
+  resize: none;
+  font-family: inherit;
+}
+
+.form-input:focus, .form-textarea:focus {
+  border-color: #f79913;
+  box-shadow: 0 0 0 4px rgba(247, 153, 19, 0.15);
+}
+
+.form-input:disabled, .form-textarea:disabled {
+  background-color: #f8fafc;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.fw-bold { font-weight: 700; }
+.text-decoration-line-through { text-decoration: line-through; }
+
+.checkbox-group-wrapper {
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 15px;
+}
+
+.checkbox-item {
+  padding: 5px 0;
+}
+
+.group-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+    margin-bottom: 25px;
+}
+
+/* Кнопка "Отмена" */
+.btn-cancel {
+  background: none;
+  border: 1px solid #cbd5e1;
+  color: #64748b;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 550;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background-color: #f1f5f9;
+  color: #334155;
+}
+
+
+.btn-submit {
+  flex-grow: 1;
+  background: linear-gradient(90deg, #f79913, #da4503);
+  border: none;
+  color: #ffffff;
+  padding: 11px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.btn-submit:hover {
+background: linear-gradient(90deg, #da4503, #f79913);
+}
+
+.btn-submit:active {
+  transform: scale(0.95);
+}
+
+.btn-cancel:disabled, .btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+

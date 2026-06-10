@@ -3,12 +3,15 @@ import { Checkbox } from 'components';
 import 'app/TodoItem/TodoItem.css';
 import { useRemoveTodoMutation, useUpdateTodoMutation } from 'redux/todoApi';
 import { Todo } from 'types/todo';
+import { FilterType } from 'app/Filter/Filter.types';
 
-export const TodoItem: React.FC<{ todo: Todo }> = ({ todo }) => {
-  const [updateTodo, { data: updatedData, isLoading: isUpdating }] = useUpdateTodoMutation();
+export const TodoItem: React.FC<{ todo: Todo; page: number; currentFilter: FilterType }> = ({
+  todo,
+  page,
+  currentFilter,
+}) => {
+  const [updateTodo, { isLoading: isUpdating }] = useUpdateTodoMutation();
   const [removeTodo, { isLoading: isRemoving, isSuccess: isRemoved }] = useRemoveTodoMutation();
-
-  const currentData = updatedData ?? todo;
   /*автогенерируемый хук
 
   Хук возвращает объект, содержащий состояние запроса и сами данные.
@@ -23,38 +26,47 @@ export const TodoItem: React.FC<{ todo: Todo }> = ({ todo }) => {
 
   const handleToggle = () => {
     updateTodo({
-      id: currentData.id,
-      isCompleted: !currentData.isCompleted,
+      id: todo.id,
+      isCompleted: !todo.isCompleted,
+      page: page, // Передаем страницу, чтобы RTK Query мгновенно нашел нужный кэш
+      filter: currentFilter,
     });
   };
 
-  if (isRemoving) return <p>Идет удаление задачи {currentData.id}...</p>;
-  if (isRemoved) return <p>Задача {currentData.id} была удалена</p>;
-  if (isUpdating) return <p>Идет обновление задачи {currentData.id}...</p>;
+  const handleRemove = () => {
+    removeTodo({
+      id: todo.id,
+      page: page,
+      filter: currentFilter, // Передаем страницу и фильтр в мутацию удаления
+    });
+  };
+
+  if (isRemoving) return <p>Идет удаление задачи {todo.id}...</p>;
+  if (isRemoved) return <p>Задача {todo.id} была удалена</p>;
 
   return (
     <>
       <div className="todo-item">
         <span className="fit-content">
-          <Checkbox checked={currentData.isCompleted} onChange={handleToggle} disabled={isUpdating} />
+          <Checkbox checked={todo.isCompleted} onChange={handleToggle} disabled={isUpdating} />
         </span>
         <span
-          className={`expand-content name ${currentData.isImportant ? 'fw-bold' : ''}`}
-          style={currentData.isCompleted ? { textDecoration: 'line-through' } : {}}>
-          {currentData.name}
+          className={`expand-content name ${todo.isImportant ? 'fw-bold' : ''}`}
+          style={todo.isCompleted ? { textDecoration: 'line-through' } : {}}>
+          {todo.name}
         </span>
         <span
-          className={`expand-content ${currentData.isImportant ? 'fw-bold' : ''}`}
-          style={currentData.isCompleted ? { textDecoration: 'line-through' } : {}}>
-          {currentData.info}
+          className={`expand-content ${todo.isImportant ? 'fw-bold' : ''}`}
+          style={todo.isCompleted ? { textDecoration: 'line-through' } : {}}>
+          {todo.info}
         </span>
         <span className="fit-content">
-          <Link to={`edit_todo/${currentData.id}`}>
+          <Link to={`/edit_todo/${todo.id}?returnPage=${page}`}>
             <button className="btn-edit"></button>
           </Link>
         </span>
         <span className="fit-content">
-          <button className="btn-delete" onClick={() => removeTodo(currentData.id)}></button>
+          <button className="btn-delete" onClick={handleRemove} disabled={isRemoving}></button>
         </span>
       </div>
     </>
