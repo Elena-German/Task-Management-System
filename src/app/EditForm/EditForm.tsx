@@ -5,13 +5,7 @@ import { Checkbox } from 'components';
 import { todoApi, useGetOneTodoQuery } from 'redux/todoApi';
 import 'app/EditForm/EditForm.css';
 
-const useUpdateTodoMutation = todoApi.endpoints.updateTodo.useMutation; //useMutation - Это специальное внутреннее свойство RTK Query,
-//  встроенное в каждый эндпоинт типа builder.mutation. Оно генерирует стандартный React-хук для этого эндпоинта.
-//  можно просто импортировать хук useUpdateTodoMutation из todoApi.ts
-
-//  Когда вы вызываете хук useUpdateTodoMutation в компоненте, он возвращает массив из двух элементов:
-//  Первый элемент (updateTodo) — это функция-триггер. Пока вы её не вызовите, запрос на сервер не уйдет.
-//  Второй элемент (объект) — содержит состояние этого конкретного запроса (идет ли отправка прямо сейчас — isLoading, успешна ли она — isSuccess` и т.д.).
+const useUpdateTodoMutation = todoApi.endpoints.updateTodo.useMutation; 
 
 export const EditForm: React.FC = () => {
   const { id } = useParams();
@@ -28,24 +22,16 @@ export const EditForm: React.FC = () => {
   const dispatch = useDispatch();
 
   const { data: todoById, isLoading } = useGetOneTodoQuery(numericId, {
-    skip: isInvalidId, // RTK Query не пошлет запрос на сервер с NaN
+    skip: isInvalidId, 
   });
-  // Хук по умолчанию возвращает результат запроса в переменной с именем data/
-  // isLoading: Это встроенный булевый флаг (true / false). Он равен true только один раз — когда запрос отправлен на сервер самый первый раз,
-  // данных на клиенте еще нет, и компонент ждет ответа. Как только данные приходят, он навсегда становится false.
-  //
-  // Аргументы хука: useGetOneTodoQuery(numericId, ...)
-  // Первый аргумент - numericId: Это идентификатор задачи (число), который хук автоматически подставит в URL-адрес запроса
-  // Второй аргумент - Объект настроек: { skip: isInvalidId }
-
+  
   const [updateTodo, updateResult] = useUpdateTodoMutation();
   const { isLoading: isUpdating } = updateResult;
-
-  // Функция, которая сбросит кэш списка на сервере и перенаправит на главную
+  
   const handleGoHome = (e: React.MouseEvent) => {
-    e.preventDefault(); // Отменяем стандартный мгновенный переход ссылки
-    dispatch(todoApi.util.invalidateTags([{ type: 'todo', id: 'list' }])); // Принудительно инвалидируем (очищаем) кэш списка задач в Redux-сторе
-    navigate(`/?page=${returnPage}`); // Перенаправляем пользователя на ту страницу с которой пришел
+    e.preventDefault(); 
+    dispatch(todoApi.util.invalidateTags([{ type: 'todo', id: 'list' }])); 
+    navigate(`/?page=${returnPage}`); 
   };
 
   useEffect(() => {
@@ -55,7 +41,7 @@ export const EditForm: React.FC = () => {
       setImportant(todoById.isImportant);
       setCompleted(todoById.isCompleted);
     }
-  }, [todoById]); // Срабатывает строго при получении данных от сервера
+  }, [todoById]); 
 
   const handleClick = () => {
     if (name.trim() && info.trim()) {
@@ -93,7 +79,7 @@ export const EditForm: React.FC = () => {
       </>
     );
   } else {
-    // Если все проверки прошли успешно — рендерим форму.
+  
     contentEditForm = (
       <>
         <div className="status save_status_container">{isUpdating && <div>Сохранение изменений...</div>}</div>

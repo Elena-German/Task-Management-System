@@ -16,12 +16,10 @@
   padding: 5px 20px;
   font-size: 14px;
   font-weight: 550;
-  cursor: pointer;
-    /* Плавный переход для всех изменений цвета за 0.2 секунды */
+  cursor: pointer;   
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
-/* Линия-разделитель между кнопками */
 .filter-btn:not(:last-child) {
   border-right: 1px solid #989faa;
 }
@@ -36,7 +34,6 @@
   color: #ffffff;
 }
 
-/* Убираем синюю рамку браузера при клике, заменяя её на аккуратный контур */
 .filter-btn:focus-visible {
   outline: 2px solid #f79913;
   outline-offset: -2px;

@@ -20,6 +20,7 @@ React, React-router-dom, Typescript, Redux, Axios, React Hook Form, Yup, Webpack
  9 - реализация на createAsyncThunk <br>
 10 - реализация на RTK Query, кэширование <br>
 11 - добавлено оптимистичное обновление, фильтрация, пагинация </br>
+12 - перевод на axios </br>
 
 ## Структура
 

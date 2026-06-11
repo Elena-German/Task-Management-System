@@ -5,10 +5,9 @@ import 'app/Filter/Filter.css';
 export const Filter: React.FC<FilterProps> = ({ currentFilter, setCurrentFilter }) => {
   const [, setSearchParams] = useSearchParams();
 
-  // общий обработчик для кликов по кнопкам
-  const handleFilterChange = (filterType: FilterType) => {
-    setCurrentFilter(filterType); // Меняем стейт самого фильтра
-    setSearchParams({ page: '1' }); // Принудительно сбрасываем страницу на первую в URL
+   const handleFilterChange = (filterType: FilterType) => {
+    setCurrentFilter(filterType); 
+    setSearchParams({ page: '1' }); 
   };
   return (
     <div className="todo-filter-container">

@@ -2,11 +2,11 @@ import { useGetUserQuery, useToggleAuthMutation } from 'redux/todoApi';
 import 'app/Login/Login.css';
 
 export const Login: React.FC = () => {
-  const { isAuth, isError, isLoading } = useGetUserQuery(null, {
+  const { isAuth, isError, isLoading } = useGetUserQuery(undefined, {
     selectFromResult: ({ data, isLoading, isError }) => ({
       isLoading,
       isError,
-      isAuth: data?.[0]?.auth ?? false,
+       isAuth: data && data[0] ? data[0].auth : false,
     }),
   });
 

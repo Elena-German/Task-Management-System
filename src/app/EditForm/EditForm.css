@@ -37,7 +37,7 @@
   font-size: 15px;
   border: 1px solid #cbd5e1;
   border-radius: 10px;
-  outline: none; /*полностью удаляет контур (обводку) вокруг элемента*/
+  outline: none; 
   box-sizing: border-box;
   transition: all 0.2s ease-in-out;
   color: #000;
@@ -80,7 +80,6 @@
     margin-bottom: 25px;
 }
 
-/* Кнопка "Отмена" */
 .btn-cancel {
   background: none;
   border: 1px solid #cbd5e1;

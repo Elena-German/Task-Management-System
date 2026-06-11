@@ -204,7 +204,7 @@ module.exports = {
       },
     }),
     new ESLintPlugin({
-      extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
+      extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],      
       formatter: require.resolve('react-dev-utils/eslintFormatter'),
       eslintPath: require.resolve('eslint'),
       failOnError: true,

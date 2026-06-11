@@ -12,23 +12,12 @@ export const TodoItem: React.FC<{ todo: Todo; page: number; currentFilter: Filte
 }) => {
   const [updateTodo, { isLoading: isUpdating }] = useUpdateTodoMutation();
   const [removeTodo, { isLoading: isRemoving, isSuccess: isRemoved }] = useRemoveTodoMutation();
-  /*автогенерируемый хук
-
-  Хук возвращает объект, содержащий состояние запроса и сами данные.
-  Из него извлекаются 4 важные переменные:
-  data: Сюда придут данные от сервера (массив ваших задач), когда запрос завершится успешно. До первой загрузки здесь будет undefined.
-  isError: Булевый флаг (true / false). Становится true, если запрос завершился ошибкой (например, упал сервер или пропал интернет).
-  isFetching: Булевый флаг. Становится true каждый раз, когда отправляется запрос на сервер.
-  isSuccess: Булевый флаг. Становится true, когда запрос хотя бы один раз успешно выполнился и данные data уже доступны для отображения.
-  isLoading: равен true только самый первый раз, когда данных еще вообще нет и приложение ждет первый ответ.
-
-  */
-
+  
   const handleToggle = () => {
     updateTodo({
       id: todo.id,
       isCompleted: !todo.isCompleted,
-      page: page, // Передаем страницу, чтобы RTK Query мгновенно нашел нужный кэш
+      page: page, 
       filter: currentFilter,
     });
   };
@@ -37,7 +26,7 @@ export const TodoItem: React.FC<{ todo: Todo; page: number; currentFilter: Filte
     removeTodo({
       id: todo.id,
       page: page,
-      filter: currentFilter, // Передаем страницу и фильтр в мутацию удаления
+      filter: currentFilter, 
     });
   };
 
