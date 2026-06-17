@@ -1,11 +1,11 @@
-import React from 'react';
-import { TextFieldProps } from './TextField.types';
-import './TextField.css';
+import React from "react";
+import { TextFieldProps } from "./TextField.types";
+import "./TextField.css";
 
 export function TextField({
   label,
   placeholder,
-  containerClassName = '',
+  containerClassName = "",
   inputType,
   value,
   onChange,

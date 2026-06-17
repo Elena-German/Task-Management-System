@@ -5,83 +5,83 @@
 
 declare namespace NodeJS {
   interface ProcessEnv {
-    readonly NODE_ENV: 'development' | 'production' | 'test';
+    readonly NODE_ENV: "development" | "production" | "test";
     readonly PUBLIC_URL: string;
   }
 }
 
-declare module '*.avif' {
+declare module "*.avif" {
   const src: string;
   export default src;
 }
 
-declare module '*.bmp' {
+declare module "*.bmp" {
   const src: string;
   export default src;
 }
 
-declare module '*.gif' {
+declare module "*.gif" {
   const src: string;
   export default src;
 }
 
-declare module '*.jpg' {
+declare module "*.jpg" {
   const src: string;
   export default src;
 }
 
-declare module '*.jpeg' {
+declare module "*.jpeg" {
   const src: string;
   export default src;
 }
 
-declare module '*.png' {
+declare module "*.png" {
   const src: string;
   export default src;
 }
 
-declare module '*.webp' {
+declare module "*.webp" {
   const src: string;
   export default src;
 }
 
-declare module '*?as=avif' {
+declare module "*?as=avif" {
   const content: string;
   export default content;
 }
-declare module '*?as=webp' {
+declare module "*?as=webp" {
   const content: string;
   export default content;
 }
 
-declare module '*.svg' {
+declare module "*.svg" {
   const src: string;
   export default src;
 }
 
-declare module '*.svg?sprite' {
-  import * as React from 'react';
+declare module "*.svg?sprite" {
+  import * as React from "react";
 
   const src: React.SVGProps<SVGSVGElement> & { url: string };
   export default src;
 }
 
-declare module '*.module.css' {
+declare module "*.module.css" {
   const classes: { readonly [key: string]: string };
   export default classes;
 }
 
-declare module '*.module.scss' {
+declare module "*.module.scss" {
   const classes: { readonly [key: string]: string };
   export default classes;
 }
 
-declare module '*.css' {
+declare module "*.css" {
   const content: { [className: string]: string };
   export default content;
 }
 
-declare module '*.module.sass' {
+declare module "*.module.sass" {
   const classes: { readonly [key: string]: string };
   export default classes;
 }

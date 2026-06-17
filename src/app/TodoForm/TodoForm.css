@@ -1,114 +1,114 @@
-  .todo-form {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 15px;
-    width: 100%;
-    flex-wrap: wrap;
+.todo-form {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 15px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  flex: 1;
+  min-width: 150px;
+}
+
+.todo-form-container .form-check-label {
+  margin: 5px 0px 0 0;
+}
+
+.error-message {
+  color: #ff4d4f;
+  font-size: 12px;
+  margin-top: 4px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+
+.form-field input {
+  width: 100%;
+  padding: 4px 12px;
+  box-sizing: border-box;
+}
+
+.todo-form button {
+  height: 38px;
+  padding: 0 20px;
+  background: linear-gradient(90deg, #f79913, #da4503);
+  color: #fff;
+  font-size: 14px;
+  text-transform: uppercase;
+  border: 0px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20px;
+}
+
+.todo-form button:hover {
+  background: linear-gradient(90deg, #da4503, #f79913);
+}
+
+.todo-form button:active {
+  transform: scale(0.95);
+}
+
+.todo-form button:disabled {
+  background: #ffe6d1;
+  color: #888;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.todo-form button:disabled:hover {
+  background: #ffe6d1;
+}
+
+.todo-form button:disabled:active {
+  transform: none;
+}
+
+.todo-form-container {
+  position: relative;
+  padding-top: 55px;
+}
+
+.todo-notification {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #ffe6d1;
+  color: #d45d00;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 12px rgba(255, 122, 0, 0.08);
+}
+
+.animate-fade-in {
+  animation: fadeInEffect 0.3s ease-out forwards;
+}
+
+@keyframes fadeInEffect {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
 
-  .form-field {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    flex: 1;
-    min-width: 150px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-
-  .todo-form-container .form-check-label {
-    margin: 5px 0px 0 0;
-  }
-
-  .error-message {
-    color: #ff4d4f;
-    font-size: 12px;
-    margin-top: 4px;
-    position: absolute;
-    top: 100%;
-    left: 0;
-  }
-
-  .form-field input {
-    width: 100%;
-    padding: 4px 12px;
-    box-sizing: border-box;
-  }
-
-  .todo-form button {
-    height: 38px;
-    padding: 0 20px;
-    background: linear-gradient(90deg, #f79913, #da4503);
-    color: #fff;
-    font-size: 14px;
-    text-transform: uppercase;
-    border: 0px;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    display: inline-flex;
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    margin-left: 20px;
-  }
-
-  .todo-form button:hover {
-    background: linear-gradient(90deg, #da4503, #f79913);
-  }
-
-  .todo-form button:active {
-    transform: scale(0.95);
-  }
-
-  .todo-form button:disabled {
-    background: #ffe6d1;
-    color: #888;
-    cursor: not-allowed;
-    transform: none !important;
-  }
-
-  .todo-form button:disabled:hover {
-    background: #ffe6d1;
-  }
-
-  .todo-form button:disabled:active {
-    transform: none;
-  }
-
-  .todo-form-container {
-    position: relative;
-    padding-top: 55px;
-  }
-
-  .todo-notification {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: #ffe6d1;
-    color: #d45d00;
-    padding: 12px 20px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 12px rgba(255, 122, 0, 0.08);
-  }
-
-  .animate-fade-in {
-    animation: fadeInEffect 0.3s ease-out forwards;
-  }
-
-  @keyframes fadeInEffect {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+}

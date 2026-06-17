@@ -1,47 +1,62 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { Checkbox } from 'components';
-import { todoApi, useGetOneTodoQuery, useUpdateTodoMutation } from 'redux/todoApi';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { Form } from 'types/form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { formSchema } from 'utils/formSchema';
-import 'app/EditForm/EditForm.css';
-
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
+import { Checkbox } from "components";
+import {
+  todoApi,
+  useGetOneTodoQuery,
+  useUpdateTodoMutation,
+} from "redux/todoApi";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Form } from "types/form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { formSchema } from "utils/formSchema";
+import "app/EditForm/EditForm.css";
 
 export const EditForm: React.FC = () => {
   const { id } = useParams();
   const numericId = Number(id);
   const isInvalidId = isNaN(numericId) || !id;
   const [searchParams] = useSearchParams();
-  const returnPage = searchParams.get('returnPage') || '1';
+  const returnPage = searchParams.get("returnPage") || "1";
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-const { register, handleSubmit, reset, control, watch, formState: { errors } } = useForm<Form>({
-  resolver: yupResolver(formSchema),
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm<Form>({
+    resolver: yupResolver(formSchema),
     defaultValues: {
-      name: '',
-      info: '',
+      name: "",
+      info: "",
       important: false,
       completed: false,
-    }
+    },
   });
-   // watch позволяет следить за значениями полей для динамических CSS классов 
-  const isImportantWatch = watch('important');
-  const isCompletedWatch = watch('completed');
+  // watch позволяет следить за значениями полей для динамических CSS классов
+  const isImportantWatch = watch("important");
+  const isCompletedWatch = watch("completed");
   const { data: todoById, isLoading } = useGetOneTodoQuery(numericId, {
-    skip: isInvalidId, 
+    skip: isInvalidId,
   });
-  
+
   const [updateTodo, updateResult] = useUpdateTodoMutation();
   const { isLoading: isUpdating } = updateResult;
-  
+
   const handleGoHome = (e: React.MouseEvent) => {
-    e.preventDefault(); 
-    dispatch(todoApi.util.invalidateTags([{ type: 'todo', id: 'list' }])); 
-    navigate(`/?page=${returnPage}`); 
+    e.preventDefault();
+    dispatch(todoApi.util.invalidateTags([{ type: "todo", id: "list" }]));
+    navigate(`/?page=${returnPage}`);
   };
 
   useEffect(() => {
@@ -53,7 +68,7 @@ const { register, handleSubmit, reset, control, watch, formState: { errors } } =
         completed: todoById.isCompleted,
       });
     }
-  }, [todoById, reset]); 
+  }, [todoById, reset]);
 
   const onSubmit: SubmitHandler<Form> = (data) => {
     const todo = {
@@ -89,69 +104,92 @@ const { register, handleSubmit, reset, control, watch, formState: { errors } } =
       </>
     );
   } else {
-  
     contentEditForm = (
       <>
-        <div className="status save_status_container">{isUpdating && <div>Сохранение изменений...</div>}</div>
-<form onSubmit={handleSubmit(onSubmit)} className="edit-form-content">
-       
+        <div className="status save_status_container">
+          {isUpdating && <div>Сохранение изменений...</div>}
+        </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="edit-form-content">
           <div className="form-group">
             <label className="form-label">Название</label>
             <input
-              className={`form-input ${isImportantWatch ? 'fw-bold' : ''} ${isCompletedWatch ? 'text-decoration-line-through' : ''} ${errors.name ? 'input-error' : ''}`}
-              {...register('name')}
+              className={`form-input ${isImportantWatch ? "fw-bold" : ""} ${
+                isCompletedWatch ? "text-decoration-line-through" : ""
+              } ${errors.name ? "input-error" : ""}`}
+              {...register("name")}
               type="text"
               placeholder="Название задачи"
               autoComplete="off"
               disabled={isUpdating}
             />
-            {errors.name && <span className="error-message">{errors.name.message}</span>}
+            {errors.name && (
+              <span className="error-message">{errors.name.message}</span>
+            )}
           </div>
 
           <div className="form-group">
             <label className="form-label">Описание</label>
             <textarea
-              className={`form-textarea ${isImportantWatch ? 'fw-bold' : ''} ${isCompletedWatch ? 'text-decoration-line-through' : ''} ${errors.info ? 'input-error' : ''}`}
-              {...register('info')}
+              className={`form-textarea ${isImportantWatch ? "fw-bold" : ""} ${
+                isCompletedWatch ? "text-decoration-line-through" : ""
+              } ${errors.info ? "input-error" : ""}`}
+              {...register("info")}
               rows={3}
               placeholder="Описание"
               autoComplete="off"
               disabled={isUpdating}
             />
-            {errors.info && <span className="error-message">{errors.info.message}</span>}
+            {errors.info && (
+              <span className="error-message">{errors.info.message}</span>
+            )}
           </div>
 
           <div className="checkbox-group-wrapper">
             <div className="checkbox-item">
-             <Controller
+              <Controller
                 control={control}
                 name="important"
                 render={({ field: { onChange, value } }) => (
-                  <Checkbox label={'важная задача'} checked={value} onChange={onChange} disabled={isUpdating} />
+                  <Checkbox
+                    label={"важная задача"}
+                    checked={value}
+                    onChange={onChange}
+                    disabled={isUpdating}
+                  />
                 )}
               />
             </div>
             <div className="checkbox-item">
-               <Controller
+              <Controller
                 control={control}
                 name="completed"
                 render={({ field: { onChange, value } }) => (
-                  <Checkbox label={'выполнена'} checked={value} onChange={onChange} disabled={isUpdating} />
+                  <Checkbox
+                    label={"выполнена"}
+                    checked={value}
+                    onChange={onChange}
+                    disabled={isUpdating}
+                  />
                 )}
               />
             </div>
           </div>
 
-            <div className="group-btn">
+          <div className="group-btn">
             {/* Кнопка с типом submit автоматически вызовет функцию onSubmit */}
             <button
               type="submit"
-              className={`btn-submit ${isImportantWatch ? 'important' : ''}`}
+              className={`btn-submit ${isImportantWatch ? "important" : ""}`}
               disabled={isUpdating}
             >
-              {isUpdating ? 'Ожидание' : 'Записать'}
+              {isUpdating ? "Ожидание" : "Записать"}
             </button>
-            <button type="button" className="btn-cancel" onClick={handleGoHome} disabled={isUpdating}>
+            <button
+              type="button"
+              className="btn-cancel"
+              onClick={handleGoHome}
+              disabled={isUpdating}
+            >
               Вернуться к списку
             </button>
           </div>

@@ -1,10 +1,10 @@
-import { Provider } from 'react-redux';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { store } from './redux/store';
-import { TodoList } from 'app/TodoList/TodoList';
-import { PageContainer } from 'components/PageContainer';
-import { NotFoundPage } from 'app/NotFoundPage/NotFoundPage';
-import { EditForm } from 'app/EditForm/EditForm';
+import { Provider } from "react-redux";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { store } from "./redux/store";
+import { TodoList } from "app/TodoList/TodoList";
+import { PageContainer } from "components/PageContainer";
+import { NotFoundPage } from "app/NotFoundPage/NotFoundPage";
+import { EditForm } from "app/EditForm/EditForm";
 
 function App() {
   return (

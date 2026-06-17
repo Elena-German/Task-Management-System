@@ -8,13 +8,13 @@
   box-shadow: 9px 10px 36px 0px rgb(109, 36, 5);
 }
 
-h1{
- text-transform:uppercase;
- text-align: center;
- padding-bottom: 20px;
- color:#da4503
+h1 {
+  text-transform: uppercase;
+  text-align: center;
+  padding-bottom: 20px;
+  color: #da4503;
 }
 
-body{
+body {
   background: linear-gradient(to right, #da4503, #f79913);
 }

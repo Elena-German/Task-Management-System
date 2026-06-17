@@ -6,6 +6,7 @@ React, React-router-dom, Typescript, Redux, Axios, React Hook Form, Yup, Webpack
 ## Что реализовано:
 
 Кэширование данных, оптимистичные обновления, валидация форм, кастомные хуки для фильтрации.
+На сервере имитирована задержка 3 сек для всех запросов для демонстрации лоадера и статусов обмена с сервером во время запросов
 
 ## Версии проекта
 
@@ -23,6 +24,7 @@ React, React-router-dom, Typescript, Redux, Axios, React Hook Form, Yup, Webpack
 12 - перевод на axios </br>
 13 - перевод на Ract Hook Form </br>
 14 - добавлена валидация на Yup </br>
+15 - добавлен loader + форматирование кода с Prettier</br>
 
 ## Структура
 

@@ -43,26 +43,26 @@
   position: relative;
   cursor: pointer;
   background-repeat: no-repeat;
-  background-position: center, -1000px -1000px;  /* Уводим hover-картинку за экран */
+  background-position: center, -1000px -1000px; /* Уводим hover-картинку за экран */
   background-size: contain;
   background-color: #fff;
 }
 
 .btn-delete {
-  background-image: url('images/delete.svg'), url('images/delete-hover.svg');
+  background-image: url("images/delete.svg"), url("images/delete-hover.svg");
 }
 
 .btn-delete:hover {
-  background-image: url('images/delete-hover.svg');
+  background-image: url("images/delete-hover.svg");
   background-position: center;
 }
 
 .btn-edit {
-  background-image: url('images/edit.svg'), url('images/edit-hover.svg');
+  background-image: url("images/edit.svg"), url("images/edit-hover.svg");
 }
 
 .btn-edit:hover {
-  background-image: url('images/edit-hover.svg');
+  background-image: url("images/edit-hover.svg");
   background-position: center;
 }
 

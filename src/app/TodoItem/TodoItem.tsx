@@ -1,23 +1,24 @@
-import { Link } from 'react-router-dom';
-import { Checkbox } from 'components';
-import 'app/TodoItem/TodoItem.css';
-import { useRemoveTodoMutation, useUpdateTodoMutation } from 'redux/todoApi';
-import { Todo } from 'types/todo';
-import { FilterType } from 'app/Filter/Filter.types';
+import { Link } from "react-router-dom";
+import { Checkbox } from "components";
+import "app/TodoItem/TodoItem.css";
+import { useRemoveTodoMutation, useUpdateTodoMutation } from "redux/todoApi";
+import { Todo } from "types/todo";
+import { FilterType } from "app/Filter/Filter.types";
 
-export const TodoItem: React.FC<{ todo: Todo; page: number; currentFilter: FilterType }> = ({
-  todo,
-  page,
-  currentFilter,
-}) => {
+export const TodoItem: React.FC<{
+  todo: Todo;
+  page: number;
+  currentFilter: FilterType;
+}> = ({ todo, page, currentFilter }) => {
   const [updateTodo, { isLoading: isUpdating }] = useUpdateTodoMutation();
-  const [removeTodo, { isLoading: isRemoving, isSuccess: isRemoved }] = useRemoveTodoMutation();
-  
+  const [removeTodo, { isLoading: isRemoving, isSuccess: isRemoved }] =
+    useRemoveTodoMutation();
+
   const handleToggle = () => {
     updateTodo({
       id: todo.id,
       isCompleted: !todo.isCompleted,
-      page: page, 
+      page: page,
       filter: currentFilter,
     });
   };
@@ -26,7 +27,7 @@ export const TodoItem: React.FC<{ todo: Todo; page: number; currentFilter: Filte
     removeTodo({
       id: todo.id,
       page: page,
-      filter: currentFilter, 
+      filter: currentFilter,
     });
   };
 
@@ -37,16 +38,22 @@ export const TodoItem: React.FC<{ todo: Todo; page: number; currentFilter: Filte
     <>
       <div className="todo-item">
         <span className="fit-content">
-          <Checkbox checked={todo.isCompleted} onChange={handleToggle} disabled={isUpdating} />
+          <Checkbox
+            checked={todo.isCompleted}
+            onChange={handleToggle}
+            disabled={isUpdating}
+          />
         </span>
         <span
-          className={`expand-content name ${todo.isImportant ? 'fw-bold' : ''}`}
-          style={todo.isCompleted ? { textDecoration: 'line-through' } : {}}>
+          className={`expand-content name ${todo.isImportant ? "fw-bold" : ""}`}
+          style={todo.isCompleted ? { textDecoration: "line-through" } : {}}
+        >
           {todo.name}
         </span>
         <span
-          className={`expand-content ${todo.isImportant ? 'fw-bold' : ''}`}
-          style={todo.isCompleted ? { textDecoration: 'line-through' } : {}}>
+          className={`expand-content ${todo.isImportant ? "fw-bold" : ""}`}
+          style={todo.isCompleted ? { textDecoration: "line-through" } : {}}
+        >
           {todo.info}
         </span>
         <span className="fit-content">
@@ -55,7 +62,11 @@ export const TodoItem: React.FC<{ todo: Todo; page: number; currentFilter: Filte
           </Link>
         </span>
         <span className="fit-content">
-          <button className="btn-delete" onClick={handleRemove} disabled={isRemoving}></button>
+          <button
+            className="btn-delete"
+            onClick={handleRemove}
+            disabled={isRemoving}
+          ></button>
         </span>
       </div>
     </>

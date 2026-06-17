@@ -1,6 +1,6 @@
-import React from 'react';
-import { CheckboxProps } from './Checkbox.types';
-import './Checkbox.css';
+import React from "react";
+import { CheckboxProps } from "./Checkbox.types";
+import "./Checkbox.css";
 
 export function Checkbox({ label, checked, onChange }: CheckboxProps) {
   return (

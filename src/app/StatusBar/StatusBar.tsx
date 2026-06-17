@@ -1,4 +1,4 @@
-import 'app/StatusBar/StatusBar.css';
+import "app/StatusBar/StatusBar.css";
 
 export const StatusBar: React.FC<{
   total: number;
@@ -8,8 +8,9 @@ export const StatusBar: React.FC<{
 }> = ({ total, completed, uncompleted, important }) => {
   return (
     <div className="status-bar">
-      <span className="text-decoration-underline"> Всего задач {total}</span>: не завершенных {uncompleted}, завершенных{' '}
-      {completed}, <span className="fw-bold">важных {important} </span>
+      <span className="text-decoration-underline"> Всего задач {total}</span>:
+      не завершенных {uncompleted}, завершенных {completed},{" "}
+      <span className="fw-bold">важных {important} </span>
     </div>
   );
 };

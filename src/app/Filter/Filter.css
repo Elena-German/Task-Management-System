@@ -7,8 +7,9 @@
 .todo-filter-wrapper {
   display: flex;
   border: 1px solid #989faa;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  }
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
 
 .filter-btn {
   background: none;
@@ -16,7 +17,7 @@
   padding: 5px 20px;
   font-size: 14px;
   font-weight: 550;
-  cursor: pointer;   
+  cursor: pointer;
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
@@ -25,8 +26,8 @@
 }
 
 .filter-btn:hover {
-   background-color: #f79913;
-   color:#fff;
+  background-color: #f79913;
+  color: #fff;
 }
 
 .filter-btn.active {
