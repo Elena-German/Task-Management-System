@@ -3,7 +3,7 @@
 
 React, React-router-dom, Typescript, Redux, Axios, React Hook Form, Yup, Webpack, Eslint, Prettier
 
-## Что реализовано (Key Features):
+## Что реализовано:
 
 Кэширование данных, оптимистичные обновления, валидация форм, кастомные хуки для фильтрации.
 

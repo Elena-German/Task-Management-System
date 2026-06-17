@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Checkbox } from 'components';
-import { todoApi, useGetOneTodoQuery } from 'redux/todoApi';
+import { todoApi, useGetOneTodoQuery, useUpdateTodoMutation } from 'redux/todoApi';
 import 'app/EditForm/EditForm.css';
-
-const useUpdateTodoMutation = todoApi.endpoints.updateTodo.useMutation; 
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { Form } from 'types/form';
 
 export const EditForm: React.FC = () => {
   const { id } = useParams();
@@ -14,13 +14,19 @@ export const EditForm: React.FC = () => {
   const [searchParams] = useSearchParams();
   const returnPage = searchParams.get('returnPage') || '1';
 
-  const [name, setName] = useState('');
-  const [info, setInfo] = useState('');
-  const [important, setImportant] = useState(false);
-  const [completed, setCompleted] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+const { register, handleSubmit, reset, control, watch, formState: { errors } } = useForm<Form>({
+    defaultValues: {
+      name: '',
+      info: '',
+      important: false,
+      completed: false,
+    }
+  });
+   // watch позволяет следить за значениями полей для динамических CSS классов 
+  const isImportantWatch = watch('important');
+  const isCompletedWatch = watch('completed');
   const { data: todoById, isLoading } = useGetOneTodoQuery(numericId, {
     skip: isInvalidId, 
   });
@@ -36,24 +42,24 @@ export const EditForm: React.FC = () => {
 
   useEffect(() => {
     if (todoById) {
-      setName(todoById.name);
-      setInfo(todoById.info);
-      setImportant(todoById.isImportant);
-      setCompleted(todoById.isCompleted);
+      reset({
+        name: todoById.name,
+        info: todoById.info,
+        important: todoById.isImportant,
+        completed: todoById.isCompleted,
+      });
     }
-  }, [todoById]); 
+  }, [todoById, reset]); 
 
-  const handleClick = () => {
-    if (name.trim() && info.trim()) {
-      const todo = {
-        id: Number(id),
-        name: name.trim(),
-        info: info.trim(),
-        isImportant: important,
-        isCompleted: completed,
-      };
-      updateTodo(todo);
-    }
+  const onSubmit: SubmitHandler<Form> = (data) => {
+    const todo = {
+      id: Number(id),
+      name: data.name.trim(),
+      info: data.info.trim(),
+      isImportant: data.important,
+      isCompleted: data.completed,
+    };
+    updateTodo(todo);
   };
 
   let contentEditForm;
@@ -83,59 +89,75 @@ export const EditForm: React.FC = () => {
     contentEditForm = (
       <>
         <div className="status save_status_container">{isUpdating && <div>Сохранение изменений...</div>}</div>
-
-        <div className="edit-form-content">
+<form onSubmit={handleSubmit(onSubmit)} className="edit-form-content">
+       
           <div className="form-group">
             <label className="form-label">Название</label>
             <input
-              className={`form-input ${important ? 'fw-bold' : ''} ${completed ? 'text-decoration-line-through ' : ''}`}
-              name="name"
+              className={`form-input ${isImportantWatch ? 'fw-bold' : ''} ${isCompletedWatch ? 'text-decoration-line-through' : ''} ${errors.name ? 'input-error' : ''}`}
+              {...register('name', { 
+                required: 'Название обязательно', 
+                minLength: { value: 3, message: 'Минимум 3 символа' } 
+              })}
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
               placeholder="Название задачи"
               autoComplete="off"
               disabled={isUpdating}
             />
+            {errors.name && <span className="error-message">{errors.name.message}</span>}
           </div>
 
           <div className="form-group">
             <label className="form-label">Описание</label>
             <textarea
-              className={`form-textarea ${important ? 'fw-bold' : ''} ${
-                completed ? 'text-decoration-line-through ' : ''
-              }`}
-              name="info"
+              className={`form-textarea ${isImportantWatch ? 'fw-bold' : ''} ${isCompletedWatch ? 'text-decoration-line-through' : ''} ${errors.info ? 'input-error' : ''}`}
+              {...register('info', { 
+                required: 'Описание обязательно', 
+                minLength: { value: 3, message: 'Минимум 3 символа' } 
+              })}
               rows={3}
-              value={info}
-              onChange={(e) => setInfo(e.target.value)}
               placeholder="Описание"
               autoComplete="off"
               disabled={isUpdating}
             />
+            {errors.info && <span className="error-message">{errors.info.message}</span>}
           </div>
 
           <div className="checkbox-group-wrapper">
             <div className="checkbox-item">
-              <Checkbox label={'важная задача'} checked={important} onChange={() => setImportant(!important)} />
+             <Controller
+                control={control}
+                name="important"
+                render={({ field: { onChange, value } }) => (
+                  <Checkbox label={'важная задача'} checked={value} onChange={onChange} disabled={isUpdating} />
+                )}
+              />
             </div>
             <div className="checkbox-item">
-              <Checkbox label={'выполнена'} checked={completed} onChange={() => setCompleted(!completed)} />
+               <Controller
+                control={control}
+                name="completed"
+                render={({ field: { onChange, value } }) => (
+                  <Checkbox label={'выполнена'} checked={value} onChange={onChange} disabled={isUpdating} />
+                )}
+              />
             </div>
           </div>
 
-          <div className="group-btn">
+            <div className="group-btn">
+            {/* Кнопка с типом submit автоматически вызовет функцию onSubmit */}
             <button
-              className={`btn-submit ${important ? 'important' : ''}`}
-              onClick={handleClick}
-              disabled={isUpdating}>
+              type="submit"
+              className={`btn-submit ${isImportantWatch ? 'important' : ''}`}
+              disabled={isUpdating}
+            >
               {isUpdating ? 'Ожидание' : 'Записать'}
             </button>
-            <button className="btn-cancel" onClick={handleGoHome} disabled={isUpdating}>
+            <button type="button" className="btn-cancel" onClick={handleGoHome} disabled={isUpdating}>
               Вернуться к списку
             </button>
           </div>
-        </div>
+        </form>
       </>
     );
   }

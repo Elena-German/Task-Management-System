@@ -1,53 +1,84 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { Form } from 'types/form';
 import { Checkbox } from 'components';
-import { todoApi } from 'redux/todoApi';
+import { useCreateTodoMutation } from 'redux/todoApi';
 import 'app/TodoForm/TodoForm.css';
 
-const useCreateTodoMutation = todoApi.endpoints.createTodo.useMutation;
 
 export const TodoForm: React.FC = () => {
-  const [name, setName] = useState('');
-  const [info, setInfo] = useState('');
-  const [important, setImportant] = useState(false);
-  const [createTodo] = useCreateTodoMutation();
-
-  const handleClick = () => {
-    if (name.trim() && info.trim()) {
-      const uuid = crypto.randomUUID();
-      const data = {
-        id: parseInt(uuid.replace(/-/g, '').substring(0, 13), 16), // Преобразуем hex-строку в number
-        name: name,
-        info: info,
-        isImportant: important,
-        isCompleted: false,
-      };
-      createTodo(data);
-      setName('');
-      setInfo('');
-      setImportant(false);
+  const [showNotification, setShowNotification] = useState(false); // хранит состояние показа уведомления о добавлении задачи 
+  const [createTodo, { isSuccess }] = useCreateTodoMutation();  // достаем триггер мутации и объект состояния, откуда берем флаг успеха isSuccess
+  const { register, handleSubmit, reset, control, formState: { errors } } = useForm<Form>({
+    defaultValues: {
+      name: '',
+      info: '',
+      important: false,
     }
+  });
+
+  useEffect(() => {
+    if (isSuccess) {
+      setShowNotification(true);
+      const timer = setTimeout(() => {
+        setShowNotification(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [isSuccess]);
+
+  const onSubmit: SubmitHandler<Form> = (data) => {
+    const uuid = crypto.randomUUID();
+    const safeHexSnippet = uuid.replace(/-/g, '').substring(0, 12);
+    const safeNumberId = parseInt(safeHexSnippet, 16);
+    const todoData = {
+      id: safeNumberId,
+      name: data.name,
+      info: data.info,
+      isImportant: data.important,
+      isCompleted: false,
+    };
+    createTodo(todoData);
+    reset();
   };
 
   return (
-    <div className="todo-form">
-      <input
-        name="name"
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Название"
-        autoComplete="off"
-      />
-      <input
-        name="info"
-        type="text"
-        value={info}
-        onChange={(e) => setInfo(e.target.value)}
-        placeholder="Описание"
-        autoComplete="off"
-      />
-      <Checkbox label={'важная задача'} checked={important} onChange={() => setImportant(!important)} />
-      <button onClick={handleClick}>Добавить</button>
+    <div className="todo-form-container">
+      {showNotification && (
+        <div className="todo-notification animate-fade-in">
+          Задача успешно добавлена в конец списка!
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit(onSubmit)} className="todo-form" >
+        <div className="form-field">
+          <input
+            {...register('name', { required: 'Это поле обязательно для заполнения', minLength: { value: 3, message: 'Минимум 3 символа' }, maxLength: { value: 50, message: 'Максимум 50 символов' } })}
+            type="text"
+            placeholder="Название"
+            autoComplete="off"
+          />
+          {errors.name && <span className="error-message">{errors.name.message}</span>}
+        </div>
+        <div className="form-field">
+          <input
+            {...register('info', { required: 'Это поле обязательно для заполнения', minLength: { value: 3, message: 'Минимум 3 символа' }, maxLength: { value: 50, message: 'Максимум 100 символов' } })}
+            type="text"
+            placeholder="Описание"
+            autoComplete="off"
+          />
+          {errors.info && <span className="error-message">{errors.info.message}</span>}
+        </div>
+        {/*специальный инструмент от React Hook Form — компонент Controller. Он служит «переводчиком» между библиотекой и кастомными компонентами.*/}
+        <Controller
+          control={control}
+          name="important"
+          render={({ field: { onChange, value } }) => (
+            <Checkbox label={'важная задача'} checked={value} onChange={onChange} />
+          )}
+        />
+        <button type="submit" disabled={showNotification}>Добавить</button>
+      </form>
     </div>
   );
 };

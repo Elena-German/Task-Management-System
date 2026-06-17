@@ -4,20 +4,20 @@ import { TodoItem } from 'app/TodoItem/TodoItem';
 import { useGetAllTodoQuery } from 'redux/todoApi';
 import { Todo } from 'types/todo';
 import { TodoForm } from 'app/TodoForm/TodoForm';
-import 'app/TodoList/TodoList.css';
 import { StatusBar } from 'app/StatusBar/StatusBar';
 import { Login } from 'app/Login/Login';
 import { FilterType } from 'app/Filter/Filter.types';
 import { Filter } from 'app/Filter/Filter';
+import 'app/TodoList/TodoList.css';
 
 export const TodoList: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [currentFilter, setCurrentFilter] = useState<FilterType>('all');
+  const [currentFilter, setCurrentFilter] = useState<FilterType>('all'); 
 
   const page = Number(searchParams.get('page')) || 1;
 
   const { data, isFetching, isSuccess, isError } = useGetAllTodoQuery({ page, filter: currentFilter });
-  
+
   const total = data?.counters?.total ?? 0;
   const completed = data?.counters?.completed ?? 0;
   const uncompleted = data?.counters?.uncompleted ?? 0;
@@ -25,12 +25,20 @@ export const TodoList: React.FC = () => {
 
   const filteredTodos = data?.items || [];
   const hasMore = data?.hasMore ?? false;
-  
-  useEffect(() => {
-    if (page > 1 && isSuccess && filteredTodos.length === 0) {
-      setSearchParams({ page: String(page - 1) }, { replace: true });
-    }
-  }, [filteredTodos, page, isSuccess, setSearchParams]);
+
+ useEffect(() => {
+  //не на первой странице, данные успешно загрузились, но массив задач пустой
+  if (page > 1 && isSuccess && filteredTodos.length === 0 && !isFetching) {
+    const prevPage = page - 1;
+        
+    const currentParams = Object.fromEntries(searchParams.entries());
+    
+    setSearchParams(
+      { ...currentParams, page: String(prevPage) }, 
+      { replace: true }
+    );
+  }
+}, [filteredTodos.length, page, isSuccess, isFetching, searchParams, setSearchParams]);
 
   const handlePrevPage = () => {
     if (page > 1) {
@@ -75,7 +83,7 @@ export const TodoList: React.FC = () => {
         <button
           className="pagination-btn-round"
           onClick={handlePrevPage}
-          disabled={page === 1 || isFetching} 
+          disabled={page === 1 || isFetching}
           aria-label="Назад">
           <span className="arrow-icon left"></span>
         </button>
@@ -85,7 +93,7 @@ export const TodoList: React.FC = () => {
         <button
           className="pagination-btn-round"
           onClick={handleNextPage}
-          disabled={isEndPage || isFetching} 
+          disabled={isEndPage || isFetching}
           aria-label="Вперед">
           <span className="arrow-icon right"></span>
         </button>
