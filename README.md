@@ -21,6 +21,8 @@ React, React-router-dom, Typescript, Redux, Axios, React Hook Form, Yup, Webpack
 10 - реализация на RTK Query, кэширование <br>
 11 - добавлено оптимистичное обновление, фильтрация, пагинация </br>
 12 - перевод на axios </br>
+13 - перевод на Ract Hook Form </br>
+14 - добавлена валидация на Yup </br>
 
 ## Структура
 

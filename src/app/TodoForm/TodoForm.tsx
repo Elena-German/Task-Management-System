@@ -3,13 +3,17 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { Form } from 'types/form';
 import { Checkbox } from 'components';
 import { useCreateTodoMutation } from 'redux/todoApi';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { formSchema } from 'utils/formSchema';
 import 'app/TodoForm/TodoForm.css';
+
 
 
 export const TodoForm: React.FC = () => {
   const [showNotification, setShowNotification] = useState(false); // хранит состояние показа уведомления о добавлении задачи 
   const [createTodo, { isSuccess }] = useCreateTodoMutation();  // достаем триггер мутации и объект состояния, откуда берем флаг успеха isSuccess
   const { register, handleSubmit, reset, control, formState: { errors } } = useForm<Form>({
+     resolver: yupResolver(formSchema),
     defaultValues: {
       name: '',
       info: '',
@@ -53,7 +57,7 @@ export const TodoForm: React.FC = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="todo-form" >
         <div className="form-field">
           <input
-            {...register('name', { required: 'Это поле обязательно для заполнения', minLength: { value: 3, message: 'Минимум 3 символа' }, maxLength: { value: 50, message: 'Максимум 50 символов' } })}
+            {...register('name')}
             type="text"
             placeholder="Название"
             autoComplete="off"
@@ -62,7 +66,7 @@ export const TodoForm: React.FC = () => {
         </div>
         <div className="form-field">
           <input
-            {...register('info', { required: 'Это поле обязательно для заполнения', minLength: { value: 3, message: 'Минимум 3 символа' }, maxLength: { value: 50, message: 'Максимум 100 символов' } })}
+            {...register('info')}
             type="text"
             placeholder="Описание"
             autoComplete="off"

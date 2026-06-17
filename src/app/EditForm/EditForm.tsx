@@ -3,9 +3,12 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Checkbox } from 'components';
 import { todoApi, useGetOneTodoQuery, useUpdateTodoMutation } from 'redux/todoApi';
-import 'app/EditForm/EditForm.css';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Form } from 'types/form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { formSchema } from 'utils/formSchema';
+import 'app/EditForm/EditForm.css';
+
 
 export const EditForm: React.FC = () => {
   const { id } = useParams();
@@ -17,6 +20,7 @@ export const EditForm: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 const { register, handleSubmit, reset, control, watch, formState: { errors } } = useForm<Form>({
+  resolver: yupResolver(formSchema),
     defaultValues: {
       name: '',
       info: '',
@@ -95,10 +99,7 @@ const { register, handleSubmit, reset, control, watch, formState: { errors } } =
             <label className="form-label">Название</label>
             <input
               className={`form-input ${isImportantWatch ? 'fw-bold' : ''} ${isCompletedWatch ? 'text-decoration-line-through' : ''} ${errors.name ? 'input-error' : ''}`}
-              {...register('name', { 
-                required: 'Название обязательно', 
-                minLength: { value: 3, message: 'Минимум 3 символа' } 
-              })}
+              {...register('name')}
               type="text"
               placeholder="Название задачи"
               autoComplete="off"
@@ -111,10 +112,7 @@ const { register, handleSubmit, reset, control, watch, formState: { errors } } =
             <label className="form-label">Описание</label>
             <textarea
               className={`form-textarea ${isImportantWatch ? 'fw-bold' : ''} ${isCompletedWatch ? 'text-decoration-line-through' : ''} ${errors.info ? 'input-error' : ''}`}
-              {...register('info', { 
-                required: 'Описание обязательно', 
-                minLength: { value: 3, message: 'Минимум 3 символа' } 
-              })}
+              {...register('info')}
               rows={3}
               placeholder="Описание"
               autoComplete="off"
