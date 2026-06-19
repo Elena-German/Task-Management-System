@@ -12,7 +12,7 @@ function App() {
       {/* делает хранилище Redux доступным для всех вложенных компонентов */}
       <PageContainer>
         <div className="App">
-          <BrowserRouter>
+          <BrowserRouter basename="/Task-Management-System">
             <Routes>
               <Route path="*" element={<NotFoundPage />} />
               <Route path="/" element={<TodoList />} />

@@ -2,6 +2,7 @@ import { createApi, BaseQueryFn } from "@reduxjs/toolkit/query/react";
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
 import { FilterType } from "app/Filter/Filter.types";
 import { Todo } from "types/todo";
+import { baseURL } from "api/baseURL";
 
 interface AxiosBaseQueryArgs {
   url: string;
@@ -16,7 +17,7 @@ interface AxiosBaseQueryError {
 }
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:4000/",
+  baseURL: baseURL,
 });
 
 const axiosBaseQuery =
