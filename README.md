@@ -25,6 +25,10 @@ React, React-router-dom, Typescript, Redux, Axios, React Hook Form, Yup, Webpack
 13 - перевод на Ract Hook Form </br>
 14 - добавлена валидация на Yup </br>
 15 - добавлен loader + форматирование кода с Prettier</br>
+16 - серверная часть перенесена на сторонний ресурс (vercel.com) + приложение размещено на GitPages</br>
+
+## Страница проекта
+https://elena-german.github.io/Task-Management-System/
 
 ## Структура
 
